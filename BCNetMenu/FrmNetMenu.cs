@@ -25,6 +25,7 @@ namespace BCNetMenu
         private ContextMenuStrip IconMenu = null;
         private void Form1_Load(object sender, EventArgs e)
         {
+            Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
             this.Icon = Resources.network_computer;
             nIcon = new NotifyIcon();
             nIcon.Icon = Resources.network_computer;
