@@ -88,6 +88,24 @@
   <ItemGroup>
     <None Include="Resources\network_computer.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signal_0.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signal_1.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signal_2.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signal_3.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signal_4.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\signal_5.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
