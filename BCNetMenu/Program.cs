@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -18,5 +19,11 @@ namespace BCNetMenu
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmNetMenu());
         }
+
+        public enum SignalDisplayType
+        {
+            Signal_Bars
+        }
+        
     }
 }

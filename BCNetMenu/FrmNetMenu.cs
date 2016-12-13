@@ -12,6 +12,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BCNetMenu.Properties;
 using SimpleWifi;
+using SimpleWifi.Win32;
+using SimpleWifi.Win32.Interop;
 
 namespace BCNetMenu
 {
@@ -25,7 +27,7 @@ namespace BCNetMenu
         private ContextMenuStrip IconMenu = null;
         private void Form1_Load(object sender, EventArgs e)
         {
-            Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
+            
             this.Icon = Resources.network_computer;
             nIcon = new NotifyIcon();
             nIcon.Icon = Resources.network_computer;
@@ -37,11 +39,16 @@ namespace BCNetMenu
             IconMenu.Opening += IconMenu_Opening;
             
             nIcon.Visible = true;
+            Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
         }
 
+        
+        private int FontSize = 24;
         private void IconMenu_Opening(object sender, CancelEventArgs e)
         {
             IconMenu.Items.Clear();
+            IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
+            IconMenu.ImageScalingSize = new Size(64,64);
             var standardconnections = NetworkConnectionInfo.GetConnections();
             foreach (var stdcon in standardconnections)
             {
@@ -56,6 +63,7 @@ namespace BCNetMenu
                 {
                     tsm.Click += vpnconnect_Click;
                 }
+                //tsm.Font = new Font(tsm.Font.FontFamily,FontSize,tsm.Font.Style);
                 tsm.Tag = stdcon;
                 IconMenu.Items.Add(tsm);
             }
@@ -63,12 +71,34 @@ namespace BCNetMenu
             var wirelessconnections = NetworkConnectionInfo.GetWirelessConnections();
             foreach (var wirelesscon in wirelessconnections)
             {
-                ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name);
-                tsm.Checked = wirelesscon.Connected;
-                tsm.Tag = wirelesscon;
-                IconMenu.Items.Add(tsm);
-                tsm.Click += WirelessClick;
+                
+                //if (wirelesscon.Name.Trim().Length > 0)
+                {
+                    ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name);
+                    tsm.Checked = wirelesscon.Connected;
+                    //tsm.Font = new Font(tsm.Font.FontFamily, FontSize, tsm.Font.Style);
+
+                    var grabIcon = ((Icon) Resources.ResourceManager.GetObject(GetSignal((int) wirelesscon.APInfo.SignalStrength)));
+                    tsm.Image = new Icon(grabIcon, 64, 64).ToBitmap();
+
+                    tsm.Tag = wirelesscon;
+                    IconMenu.Items.Add(tsm);
+                    tsm.Click += WirelessClick;
+                }
             }
+        }
+        private String[] SignalIcons = new String[] { "signal_0", "signal_1", "signal_2", "signal_3", "signal_4", "signal_5" };
+        private string GetSignal(int Percent)
+        {
+            if (Percent == 0) return "signal_0";
+            if (Percent <= 20) return "signal_1";
+            if (Percent <= 40) return "signal_2";
+            if (Percent <= 60) return "signal_3";
+            if (Percent <= 80) return "signal_4";
+            if (Percent <= 100) return "signal_5";
+
+            return "signal_5";
+
         }
         private void WirelessClick(object sender,EventArgs e)
         {
@@ -116,23 +146,56 @@ namespace BCNetMenu
         public String Name;
         public bool Connected;
         public AccessPoint APInfo;
+        public WlanProfileInfo Profile;
         public NetworkInterface NetInfo;
-        public NetworkConnectionInfo(String pName,bool pConnected,AccessPoint pAPInfo,NetworkInterface pnetinfo)
+        public NetworkConnectionInfo(String pName,bool pConnected, AccessPoint pAPInfo,NetworkInterface pnetinfo)
         {
             Name = pName;
             Connected = pConnected;
             APInfo = pAPInfo;
+
             NetInfo = pnetinfo;
+        }
+
+        private static String GetStringForSSID(Dot11Ssid ssid)
+        {
+            return Encoding.ASCII.GetString(ssid.SSID, 0, (int) ssid.SSIDLength);
         }
         public static IEnumerable<NetworkConnectionInfo> GetWirelessConnections()
         {
-            SimpleWifi.Wifi wifi = new Wifi();
-            var AccessPoints = wifi.GetAccessPoints();
-            foreach(var AccessPoint in AccessPoints)
+            
+            WlanClient client = new WlanClient();
+            foreach (WlanInterface wlaninterface in client.Interfaces)
             {
-                NetworkConnectionInfo nci = new NetworkConnectionInfo(AccessPoint.Name, AccessPoint.IsConnected, AccessPoint,null);
-                yield return nci;
+                Dictionary<String, WlanProfileInfo> ProfileData = new Dictionary<string, WlanProfileInfo>();
+
+                foreach (var prof in wlaninterface.GetProfiles())
+                {
+                    String sName = prof.profileName;
+                    ProfileData.Add(sName,prof);
+                }
+                var networks = wlaninterface.GetAvailableNetworkList(0);
+                foreach (WlanAvailableNetwork network in networks)
+                {
+                    WlanProfileInfo prof;
+                    if (ProfileData.ContainsKey(network.profileName))
+                    {
+                        prof = ProfileData[network.profileName];
+
+                    }
+                    
+                }
             }
+
+            SimpleWifi.Wifi wifi = new Wifi();
+            
+             var AccessPoints = wifi.GetAccessPoints();
+             
+             foreach(var AccessPoint in AccessPoints)
+             {
+                 NetworkConnectionInfo nci = new NetworkConnectionInfo(AccessPoint.Name, AccessPoint.IsConnected, AccessPoint,null);
+                 yield return nci;
+             }
         }
         
         public static IEnumerable<NetworkConnectionInfo> GetConnections()
