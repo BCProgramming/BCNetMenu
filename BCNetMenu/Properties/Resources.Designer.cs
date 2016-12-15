@@ -73,6 +73,16 @@ namespace BCNetMenu.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon server_network {
+            get {
+                object obj = ResourceManager.GetObject("server_network", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon signal_0 {
             get {
                 object obj = ResourceManager.GetObject("signal_0", resourceCulture);

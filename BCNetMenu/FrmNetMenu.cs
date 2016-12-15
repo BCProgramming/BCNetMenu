@@ -40,35 +40,54 @@ namespace BCNetMenu
             
             nIcon.Visible = true;
             Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
+            Hide();
         }
 
         
-        private int FontSize = 24;
+        private int FontSize = 14;
         private void IconMenu_Opening(object sender, CancelEventArgs e)
         {
             IconMenu.Items.Clear();
             IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
             IconMenu.ImageScalingSize = new Size(64,64);
-            var standardconnections = NetworkConnectionInfo.GetConnections();
-            foreach (var stdcon in standardconnections)
+            var standardconnections = NetworkConnectionInfo.GetConnections().ToList();
+            if (standardconnections.Count == 0)
             {
-                ToolStripMenuItem tsm = new ToolStripMenuItem(stdcon.Name);
-                tsm.Checked = stdcon.Connected;
-
-                if(stdcon.Connected)
-                {
-                    tsm.Click += vpndisconnect_Click;
-                }
-                else
-                {
-                    tsm.Click += vpnconnect_Click;
-                }
-                //tsm.Font = new Font(tsm.Font.FontFamily,FontSize,tsm.Font.Style);
-                tsm.Tag = stdcon;
+                ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Configured VPN Connections>>");
+                tsm.Enabled = false;
                 IconMenu.Items.Add(tsm);
             }
+            else
+            {
+                foreach (var stdcon in standardconnections)
+                {
+                    ToolStripMenuItem tsm = new ToolStripMenuItem(stdcon.Name);
+                    tsm.Checked = stdcon.Connected;
+
+                    var grabIcon = ((Icon)Resources.ResourceManager.GetObject("server_network"));
+                    tsm.Image = new Icon(grabIcon, 64, 64).ToBitmap();
+                    if (stdcon.Connected)
+                    {
+                        tsm.Click += vpndisconnect_Click;
+                    }
+                    else
+                    {
+                        tsm.Click += vpnconnect_Click;
+                    }
+                    //tsm.Font = new Font(tsm.Font.FontFamily,FontSize,tsm.Font.Style);
+                    tsm.Tag = stdcon;
+                    IconMenu.Items.Add(tsm);
+                }
+            }
             IconMenu.Items.Add(new ToolStripSeparator());
-            var wirelessconnections = NetworkConnectionInfo.GetWirelessConnections();
+            
+            var wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
+            if (wirelessconnections.Count == 0)
+            {
+                ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Available Access Points>>");
+                tsm.Enabled = false;
+                IconMenu.Items.Add(tsm);
+            }
             foreach (var wirelesscon in wirelessconnections)
             {
                 
@@ -139,6 +158,11 @@ namespace BCNetMenu
             //check off connected network interfaces
             //show menu
             //throw new NotImplementedException();
+        }
+
+        private void frmNetMenu_Shown(object sender, EventArgs e)
+        {
+            Visible = false;
         }
     }
     public class NetworkConnectionInfo

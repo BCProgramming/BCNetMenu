@@ -32,12 +32,14 @@
             // 
             // frmNetMenu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(384, 344);
+            this.ClientSize = new System.Drawing.Size(432, 430);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmNetMenu";
             this.Text = "Form1";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.frmNetMenu_Shown);
             this.ResumeLayout(false);
 
         }
