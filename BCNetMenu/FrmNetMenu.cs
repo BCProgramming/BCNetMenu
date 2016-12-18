@@ -11,6 +11,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BCNetMenu.Properties;
+using Microsoft.Win32;
 using SimpleWifi;
 using SimpleWifi.Win32;
 using SimpleWifi.Win32.Interop;
@@ -37,7 +38,7 @@ namespace BCNetMenu
             IconMenu.Items.Add(new ToolStripMenuItem("GHOST"));
             nIcon.ContextMenuStrip = IconMenu;
             IconMenu.Opening += IconMenu_Opening;
-            
+            LoadedSettings = new NetMenuSettings();
             nIcon.Visible = true;
             Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
             Hide();
@@ -93,7 +94,7 @@ namespace BCNetMenu
                 
                 //if (wirelesscon.Name.Trim().Length > 0)
                 {
-                    ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name);
+                    ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name==""?"<unknown>":wirelesscon.Name);
                     tsm.Checked = wirelesscon.Connected;
                     //tsm.Font = new Font(tsm.Font.FontFamily, FontSize, tsm.Font.Style);
 
@@ -105,7 +106,26 @@ namespace BCNetMenu
                     tsm.Click += WirelessClick;
                 }
             }
+            IconMenu.Items.Add(new ToolStripSeparator());
+            ToolStripMenuItem SettingsItem = new ToolStripMenuItem("Settings...");
+            SettingsItem.Click += SettingsItem_Click;
+            ToolStripMenuItem ExitItem = new ToolStripMenuItem("Exit");
+            ExitItem.Click += ExitItem_Click;
+            IconMenu.Items.Add(ExitItem);
         }
+
+        private void SettingsItem_Click(object sender, EventArgs e)
+        {
+            ShowSettings = true;
+            this.Show();
+        }
+
+        private void ExitItem_Click(object sender, EventArgs e)
+        {
+            nIcon.Dispose();
+            Application.Exit();
+        }
+
         private String[] SignalIcons = new String[] { "signal_0", "signal_1", "signal_2", "signal_3", "signal_4", "signal_5" };
         private string GetSignal(int Percent)
         {
@@ -160,9 +180,73 @@ namespace BCNetMenu
             //throw new NotImplementedException();
         }
 
+        private bool ShowSettings = false;
+        private NetMenuSettings LoadedSettings;
+
+        private void RegisterStartup(bool Startup)
+        {
+            RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
+           ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (Startup)
+            {
+                registryKey.SetValue("BCNetMenu", Application.ExecutablePath);
+            }
+            else
+            {
+                registryKey.DeleteValue("BCNetMenu");
+            }
+        }
+
+        private bool IsStartupRegistered()
+        {
+            RegistryKey registryKey = Registry.CurrentUser.OpenSubKey
+          ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            return (String) registryKey.GetValue("BCNetMenu", "") == Application.ExecutablePath;
+
+        }
+
         private void frmNetMenu_Shown(object sender, EventArgs e)
         {
-            Visible = false;
+            if (!ShowSettings) Visible = false;
+            else
+            {
+                chkAutoStart.Checked = IsStartupRegistered();
+                radVPN.Checked = radWireless.Checked = radBoth.Checked = false;
+                int Converted = (int) LoadedSettings.ShowConnectionTypes;
+                switch (Converted)
+                {
+                    case (int)NetMenuSettings.ConnectionDisplayType.Connection_VPN:
+                        radVPN.Checked = true;
+                        break;
+                    case (int)NetMenuSettings.ConnectionDisplayType.Connection_Wireless:
+                        radWireless.Checked = true;
+                        break;
+                    default:
+                        radBoth.Checked = true;
+                        break;
+                }
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            
+                RegisterStartup(chkAutoStart.Checked);
+
+            if (radVPN.Checked)
+                LoadedSettings.ShowConnectionTypes = NetMenuSettings.ConnectionDisplayType.Connection_VPN;
+            else if (radWireless.Checked)
+                LoadedSettings.ShowConnectionTypes = NetMenuSettings.ConnectionDisplayType.Connection_Wireless;
+            else if(radBoth.Checked)
+                LoadedSettings.ShowConnectionTypes = NetMenuSettings.ConnectionDisplayType.Connection_VPN | NetMenuSettings.ConnectionDisplayType.Connection_Wireless;
+
+            LoadedSettings.Save();
+            Hide();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            Hide();
         }
     }
     public class NetworkConnectionInfo
