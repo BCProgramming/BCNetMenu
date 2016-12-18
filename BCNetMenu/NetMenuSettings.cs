@@ -57,6 +57,15 @@ namespace BCNetMenu
         public void Save(String sXMLFile)
         {
             XDocument doc = new XDocument(new XElement("Settings",new XAttribute("ShowConnections",(int)_ConnectionTypes)));
+            try
+            {
+                
+                Directory.CreateDirectory(Path.GetDirectoryName(sXMLFile));
+            }
+            catch (Exception exx)
+            {
+                
+            }
             using (FileStream fs = new FileStream(sXMLFile, FileMode.Create))
             {
                 doc.Save(fs);

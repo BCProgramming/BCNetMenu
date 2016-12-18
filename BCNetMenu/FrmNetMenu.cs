@@ -109,6 +109,7 @@ namespace BCNetMenu
             IconMenu.Items.Add(new ToolStripSeparator());
             ToolStripMenuItem SettingsItem = new ToolStripMenuItem("Settings...");
             SettingsItem.Click += SettingsItem_Click;
+            IconMenu.Items.Add(SettingsItem);
             ToolStripMenuItem ExitItem = new ToolStripMenuItem("Exit");
             ExitItem.Click += ExitItem_Click;
             IconMenu.Items.Add(ExitItem);
@@ -116,6 +117,21 @@ namespace BCNetMenu
 
         private void SettingsItem_Click(object sender, EventArgs e)
         {
+            chkAutoStart.Checked = IsStartupRegistered();
+            radVPN.Checked = radWireless.Checked = radBoth.Checked = false;
+            int Converted = (int)LoadedSettings.ShowConnectionTypes;
+            switch (Converted)
+            {
+                case (int)NetMenuSettings.ConnectionDisplayType.Connection_VPN:
+                    radVPN.Checked = true;
+                    break;
+                case (int)NetMenuSettings.ConnectionDisplayType.Connection_Wireless:
+                    radWireless.Checked = true;
+                    break;
+                default:
+                    radBoth.Checked = true;
+                    break;
+            }
             ShowSettings = true;
             this.Show();
         }
@@ -210,21 +226,7 @@ namespace BCNetMenu
             if (!ShowSettings) Visible = false;
             else
             {
-                chkAutoStart.Checked = IsStartupRegistered();
-                radVPN.Checked = radWireless.Checked = radBoth.Checked = false;
-                int Converted = (int) LoadedSettings.ShowConnectionTypes;
-                switch (Converted)
-                {
-                    case (int)NetMenuSettings.ConnectionDisplayType.Connection_VPN:
-                        radVPN.Checked = true;
-                        break;
-                    case (int)NetMenuSettings.ConnectionDisplayType.Connection_Wireless:
-                        radWireless.Checked = true;
-                        break;
-                    default:
-                        radBoth.Checked = true;
-                        break;
-                }
+            
             }
         }
 
