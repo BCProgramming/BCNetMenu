@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using SimpleWifi;
 using SimpleWifi.Win32;
 using SimpleWifi.Win32.Interop;
+using Office2007Rendering;
 
 namespace BCNetMenu
 {
@@ -28,7 +29,7 @@ namespace BCNetMenu
         private ContextMenuStrip IconMenu = null;
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            cboMenuAppearance.Items.AddRange(new String[] { "System", "Professional", "Office 2007" });
             this.Icon = Resources.network_computer;
             nIcon = new NotifyIcon();
             nIcon.Icon = Resources.network_computer;
@@ -39,15 +40,28 @@ namespace BCNetMenu
             nIcon.ContextMenuStrip = IconMenu;
             IconMenu.Opening += IconMenu_Opening;
             LoadedSettings = new NetMenuSettings();
+            IconMenu.Renderer = GetConfiguredToolStripRenderer();
             nIcon.Visible = true;
             Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
             Hide();
         }
+        private ToolStripRenderer GetConfiguredToolStripRenderer()
+        {
+            
+            if(LoadedSettings.MenuRenderer.Equals("Professional",StringComparison.OrdinalIgnoreCase))
+                return new ToolStripProfessionalRenderer();
+            else if(LoadedSettings.MenuRenderer.Equals("System",StringComparison.OrdinalIgnoreCase))
+                return new ToolStripSystemRenderer();
+            else 
+                return new Office2007Renderer();
 
+
+        }
         
         private int FontSize = 14;
         private void IconMenu_Opening(object sender, CancelEventArgs e)
         {
+            IconMenu.Renderer = GetConfiguredToolStripRenderer();
             IconMenu.Items.Clear();
             IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
             IconMenu.ImageScalingSize = new Size(64,64);
@@ -132,6 +146,7 @@ namespace BCNetMenu
                     radBoth.Checked = true;
                     break;
             }
+            cboMenuAppearance.SelectedItem = LoadedSettings.MenuRenderer;
             ShowSettings = true;
             this.Show();
         }
@@ -207,7 +222,7 @@ namespace BCNetMenu
             {
                 registryKey.SetValue("BCNetMenu", Application.ExecutablePath);
             }
-            else
+            else if (registryKey.GetValueNames().Contains("BCNetMenu"))
             {
                 registryKey.DeleteValue("BCNetMenu");
             }
@@ -242,6 +257,7 @@ namespace BCNetMenu
             else if(radBoth.Checked)
                 LoadedSettings.ShowConnectionTypes = NetMenuSettings.ConnectionDisplayType.Connection_VPN | NetMenuSettings.ConnectionDisplayType.Connection_Wireless;
 
+            LoadedSettings.MenuRenderer = (String)cboMenuAppearance.SelectedItem;
             LoadedSettings.Save();
             Hide();
         }

@@ -27,6 +27,12 @@ namespace BCNetMenu
             set { _ConnectionTypes = value; }
         }
 
+        private String _MenuRenderer = "Office 2007";
+
+        public String MenuRenderer {  get { return _MenuRenderer; } set { _MenuRenderer = value; } }
+        
+
+
         public static String GetDefaultSettingsFilePath()
         {
             return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BASeCamp", "BCNetMenu", "BCNetMenu.config");
@@ -51,12 +57,13 @@ namespace BCNetMenu
                 XElement RootElement = doc.Root;
                 String DisplayData = RootElement.Attribute("ShowConnections").Value;
                 _ConnectionTypes = (ConnectionDisplayType) int.Parse(DisplayData);
+                _MenuRenderer = RootElement.Attribute("Renderer") == null ? "System" : RootElement.Attribute("Renderer").Value;
             }
         }
 
         public void Save(String sXMLFile)
         {
-            XDocument doc = new XDocument(new XElement("Settings",new XAttribute("ShowConnections",(int)_ConnectionTypes)));
+            XDocument doc = new XDocument(new XElement("Settings",new XAttribute("ShowConnections",(int)_ConnectionTypes),new XAttribute("Renderer",_MenuRenderer)));
             try
             {
                 

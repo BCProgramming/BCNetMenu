@@ -36,15 +36,18 @@
             this.radBoth = new System.Windows.Forms.RadioButton();
             this.radWireless = new System.Windows.Forms.RadioButton();
             this.radVPN = new System.Windows.Forms.RadioButton();
+            this.cboMenuAppearance = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(204, 247);
+            this.button1.Location = new System.Drawing.Point(181, 225);
+            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(94, 38);
+            this.button1.Size = new System.Drawing.Size(84, 30);
             this.button1.TabIndex = 0;
             this.button1.Text = "&OK";
             this.button1.UseVisualStyleBackColor = true;
@@ -53,9 +56,10 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(101, 247);
+            this.button2.Location = new System.Drawing.Point(90, 225);
+            this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(94, 38);
+            this.button2.Size = new System.Drawing.Size(84, 30);
             this.button2.TabIndex = 1;
             this.button2.Text = "&Cancel";
             this.button2.UseVisualStyleBackColor = true;
@@ -64,9 +68,10 @@
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(12, 25);
+            this.chkAutoStart.Location = new System.Drawing.Point(11, 20);
+            this.chkAutoStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkAutoStart.Name = "chkAutoStart";
-            this.chkAutoStart.Size = new System.Drawing.Size(170, 24);
+            this.chkAutoStart.Size = new System.Drawing.Size(148, 21);
             this.chkAutoStart.TabIndex = 2;
             this.chkAutoStart.Text = "Start with Windows";
             this.chkAutoStart.UseVisualStyleBackColor = true;
@@ -76,9 +81,11 @@
             this.groupBox1.Controls.Add(this.radBoth);
             this.groupBox1.Controls.Add(this.radWireless);
             this.groupBox1.Controls.Add(this.radVPN);
-            this.groupBox1.Location = new System.Drawing.Point(12, 56);
+            this.groupBox1.Location = new System.Drawing.Point(11, 45);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(286, 129);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.groupBox1.Size = new System.Drawing.Size(254, 103);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connections";
@@ -86,9 +93,10 @@
             // radBoth
             // 
             this.radBoth.AutoSize = true;
-            this.radBoth.Location = new System.Drawing.Point(6, 85);
+            this.radBoth.Location = new System.Drawing.Point(5, 68);
+            this.radBoth.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.radBoth.Name = "radBoth";
-            this.radBoth.Size = new System.Drawing.Size(68, 24);
+            this.radBoth.Size = new System.Drawing.Size(58, 21);
             this.radBoth.TabIndex = 6;
             this.radBoth.TabStop = true;
             this.radBoth.Text = "&Both";
@@ -97,9 +105,10 @@
             // radWireless
             // 
             this.radWireless.AutoSize = true;
-            this.radWireless.Location = new System.Drawing.Point(6, 55);
+            this.radWireless.Location = new System.Drawing.Point(5, 44);
+            this.radWireless.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.radWireless.Name = "radWireless";
-            this.radWireless.Size = new System.Drawing.Size(94, 24);
+            this.radWireless.Size = new System.Drawing.Size(83, 21);
             this.radWireless.TabIndex = 5;
             this.radWireless.TabStop = true;
             this.radWireless.Text = "Wireless";
@@ -108,25 +117,45 @@
             // radVPN
             // 
             this.radVPN.AutoSize = true;
-            this.radVPN.Location = new System.Drawing.Point(6, 25);
+            this.radVPN.Location = new System.Drawing.Point(5, 20);
+            this.radVPN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.radVPN.Name = "radVPN";
-            this.radVPN.Size = new System.Drawing.Size(66, 24);
+            this.radVPN.Size = new System.Drawing.Size(57, 21);
             this.radVPN.TabIndex = 4;
             this.radVPN.TabStop = true;
             this.radVPN.Text = "VPN";
             this.radVPN.UseVisualStyleBackColor = true;
             // 
+            // cboMenuAppearance
+            // 
+            this.cboMenuAppearance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMenuAppearance.FormattingEnabled = true;
+            this.cboMenuAppearance.Location = new System.Drawing.Point(16, 185);
+            this.cboMenuAppearance.Name = "cboMenuAppearance";
+            this.cboMenuAppearance.Size = new System.Drawing.Size(158, 24);
+            this.cboMenuAppearance.TabIndex = 5;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 154);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(85, 17);
+            this.label1.TabIndex = 6;
+            this.label1.Text = "Appearance";
+            // 
             // frmNetMenu
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(310, 297);
+            this.ClientSize = new System.Drawing.Size(276, 265);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.cboMenuAppearance);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.chkAutoStart);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "frmNetMenu";
@@ -149,6 +178,8 @@
         private System.Windows.Forms.RadioButton radBoth;
         private System.Windows.Forms.RadioButton radWireless;
         private System.Windows.Forms.RadioButton radVPN;
+        private System.Windows.Forms.ComboBox cboMenuAppearance;
+        private System.Windows.Forms.Label label1;
     }
 }
 
