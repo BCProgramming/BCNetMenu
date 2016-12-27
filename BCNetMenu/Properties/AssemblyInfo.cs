@@ -6,9 +6,9 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("BCNetMenu")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("BASeCamp Network Menu")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("BASeCamp Corporation")]
 [assembly: AssemblyProduct("BCNetMenu")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
