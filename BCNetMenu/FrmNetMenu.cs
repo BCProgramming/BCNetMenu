@@ -266,6 +266,15 @@ namespace BCNetMenu
         {
             Hide();
         }
+
+        private void frmNetMenu_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if(e.CloseReason!=CloseReason.ApplicationExitCall)
+            {
+                Hide();
+                e.Cancel = true;
+            }
+        }
     }
     public class NetworkConnectionInfo
     {

@@ -160,6 +160,7 @@
             this.MinimizeBox = false;
             this.Name = "frmNetMenu";
             this.Text = "Network Menu Settings";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmNetMenu_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Shown += new System.EventHandler(this.frmNetMenu_Shown);
             this.groupBox1.ResumeLayout(false);
