@@ -38,13 +38,17 @@
             this.radVPN = new System.Windows.Forms.RadioButton();
             this.cboMenuAppearance = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.lblCurrentFont = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.button3 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(181, 225);
+            this.button1.Location = new System.Drawing.Point(218, 324);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(84, 30);
@@ -56,7 +60,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(90, 225);
+            this.button2.Location = new System.Drawing.Point(127, 324);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(84, 30);
@@ -85,7 +89,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(254, 103);
+            this.groupBox1.Size = new System.Drawing.Size(290, 103);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connections";
@@ -132,7 +136,7 @@
             this.cboMenuAppearance.FormattingEnabled = true;
             this.cboMenuAppearance.Location = new System.Drawing.Point(16, 185);
             this.cboMenuAppearance.Name = "cboMenuAppearance";
-            this.cboMenuAppearance.Size = new System.Drawing.Size(158, 24);
+            this.cboMenuAppearance.Size = new System.Drawing.Size(179, 24);
             this.cboMenuAppearance.TabIndex = 5;
             // 
             // label1
@@ -144,11 +148,42 @@
             this.label1.TabIndex = 6;
             this.label1.Text = "Appearance";
             // 
+            // lblCurrentFont
+            // 
+            this.lblCurrentFont.AutoSize = true;
+            this.lblCurrentFont.Location = new System.Drawing.Point(14, 31);
+            this.lblCurrentFont.Name = "lblCurrentFont";
+            this.lblCurrentFont.Size = new System.Drawing.Size(134, 17);
+            this.lblCurrentFont.TabIndex = 7;
+            this.lblCurrentFont.Text = "12pt. Verdana, Bold";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.lblCurrentFont);
+            this.groupBox2.Location = new System.Drawing.Point(11, 216);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(290, 93);
+            this.groupBox2.TabIndex = 8;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "&Font";
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(207, 55);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 30);
+            this.button3.TabIndex = 8;
+            this.button3.Text = "&Change...";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
             // frmNetMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(276, 265);
+            this.ClientSize = new System.Drawing.Size(313, 364);
+            this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboMenuAppearance);
             this.Controls.Add(this.groupBox1);
@@ -165,6 +200,8 @@
             this.Shown += new System.EventHandler(this.frmNetMenu_Shown);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -181,6 +218,9 @@
         private System.Windows.Forms.RadioButton radVPN;
         private System.Windows.Forms.ComboBox cboMenuAppearance;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblCurrentFont;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.Button button3;
     }
 }
 
