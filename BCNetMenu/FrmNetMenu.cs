@@ -149,7 +149,14 @@ namespace BCNetMenu
             IconMenu.Items.Clear();
             IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
             IconMenu.ImageScalingSize = new Size(64, 64);
-            var standardconnections = NetworkConnectionInfo.GetConnections().ToList();
+            List<NetworkConnectionInfo> standardconnections = null;
+            try
+            {
+                standardconnections = NetworkConnectionInfo.GetConnections().ToList();
+            }catch(Exception exx)
+            {
+                standardconnections = new List<NetworkConnectionInfo>();
+            }
             if (standardconnections.Count == 0)
             {
                 ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Configured VPN Connections>>");
@@ -180,8 +187,15 @@ namespace BCNetMenu
                 }
             }
             IconMenu.Items.Add(new ToolStripSeparator());
-
-            var wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
+            List<NetworkConnectionInfo> wirelessconnections = null;
+            try
+            {
+                wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
+            }
+            catch(Exception exx)
+            {
+                wirelessconnections = new List<NetworkConnectionInfo>();
+            }
             if (wirelessconnections.Count == 0)
             {
                 ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Available Access Points>>");
