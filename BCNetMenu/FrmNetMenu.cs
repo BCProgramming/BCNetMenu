@@ -73,16 +73,38 @@ namespace BCNetMenu
         }
         private String GetUpdatedTip()
         {
-            //retrieves the connected VPN and Wireless connections.
-            var standardconnections = NetworkConnectionInfo.GetConnections().ToList();
+            try
+            {
+                List<NetworkConnectionInfo> standardconnections;
+                List<NetworkConnectionInfo> wirelessconnections;
+                //retrieves the connected VPN and Wireless connections.
+                try
+                {
+                    standardconnections = NetworkConnectionInfo.GetConnections().ToList();
+                }
+                catch(Exception exx)
+                {
+                    standardconnections = new List<NetworkConnectionInfo>();
+                }
 
-            String[] ConnectedVPNs = (from c in standardconnections where c.Connected select c.Name).ToArray();
+                String[] ConnectedVPNs = (from c in standardconnections where c!=null && c.Connected select c.Name).ToArray();
 
+                try
+                {
+                    wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
+                }
+                catch(Exception exx)
+                {
+                    wirelessconnections = new List<NetworkConnectionInfo>();
+                }
+                String[] ConnectedWireless = (from c in wirelessconnections where c!=null && c.Connected select c.Name).ToArray();
 
-            var wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
-            String[] ConnectedWireless = (from c in wirelessconnections where c.Connected select c.Name).ToArray();
-
-            return "Connected to " + String.Join(",", ConnectedVPNs) + "; " + String.Join(",", ConnectedWireless);
+                return "Connected to " + String.Join(",", ConnectedVPNs) + "; " + String.Join(",", ConnectedWireless);
+            }
+            catch(Exception exx)
+            {
+                return "BASeCamp Network Menu";
+            }
 
 
 
