@@ -6,8 +6,10 @@ using System.Drawing;
 using System.Linq;
 using System.Net;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BCNetMenu.Properties;
@@ -38,7 +40,7 @@ namespace BCNetMenu
         }
         private void Form1_Load(object sender, EventArgs e)
         {
-            cboMenuAppearance.Items.AddRange(new String[] { "System", "Professional", "Office 2007" });
+            cboMenuAppearance.Items.AddRange(new String[] { "System", "Professional", "Office 2007", "Windows 10 Foldout" });
             this.Icon = Resources.network_computer;
             nIcon = new NotifyIcon();
             nIcon.Icon = Resources.network_computer;
@@ -55,28 +57,67 @@ namespace BCNetMenu
             nIcon.Visible = true;
             Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
             Hide();
-            nIcon.MouseClick += NIcon_MouseClick;
+            nIcon.MouseUp += NIcon_MouseUp;
+            nIcon.MouseMove += NIcon_MouseMove;
+            UpdateTipTimer = new System.Threading.Timer(TipTimer, null, TimeSpan.Zero, new TimeSpan(0, 0, 0, 10));
         }
-
-        private void NIcon_MouseClick(object sender, MouseEventArgs e)
+        System.Threading.Timer UpdateTipTimer = null;
+        private void NIcon_MouseMove(object sender, MouseEventArgs e)
         {
-            if(e.Button==MouseButtons.Left)
+           
+        }
+        private void TipTimer(object State)
+        {
+            String UpdatedTip = GetUpdatedTip();
+            nIcon.Text = "BCNetMenu - " + UpdatedTip;
+        }
+        private String GetUpdatedTip()
+        {
+            //retrieves the connected VPN and Wireless connections.
+            var standardconnections = NetworkConnectionInfo.GetConnections().ToList();
+
+            String[] ConnectedVPNs = (from c in standardconnections where c.Connected select c.Name).ToArray();
+
+
+            var wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
+            String[] ConnectedWireless = (from c in wirelessconnections where c.Connected select c.Name).ToArray();
+
+            return "Connected to " + String.Join(",", ConnectedVPNs) + "; " + String.Join(",", ConnectedWireless);
+
+
+
+        }
+        private void NIcon_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
             {
-                //nIcon.ContextMenuStrip.Show(nIcon);
+                MethodInfo mi = typeof(NotifyIcon).GetMethod("ShowContextMenu", BindingFlags.Instance | BindingFlags.NonPublic);
+                mi.Invoke(nIcon, null);
             }
         }
 
+        
+
         private ToolStripRenderer GetConfiguredToolStripRenderer()
         {
-
             if (LoadedSettings.MenuRenderer.Equals("Professional", StringComparison.OrdinalIgnoreCase))
                 return new ToolStripProfessionalRenderer();
             else if (LoadedSettings.MenuRenderer.Equals("System", StringComparison.OrdinalIgnoreCase))
                 return new ToolStripSystemRenderer();
+            else if (LoadedSettings.MenuRenderer.Equals("Windows 10 Foldout", StringComparison.OrdinalIgnoreCase))
+            {
+                return new Win10MenuRenderer();
+            }
             else
-                return new Office2007Renderer();
-
-
+            {
+                if(Environment.OSVersion.Version.Major>=10)
+                {
+                    return new Win10MenuRenderer();
+                }
+                else {
+                    return new Office2007Renderer();
+                }
+            }
         }
 
         private int FontSize = 14;
@@ -232,10 +273,7 @@ namespace BCNetMenu
 
         private void NIcon_Click(object sender, EventArgs e)
         {
-            //Go through all Network interfaces and create a context menu out of them
-            //check off connected network interfaces
-            //show menu
-            //throw new NotImplementedException();
+            
         }
 
         private bool ShowSettings = false;
