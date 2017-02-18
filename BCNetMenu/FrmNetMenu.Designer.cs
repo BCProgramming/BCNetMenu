@@ -41,14 +41,20 @@
             this.lblCurrentFont = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.chkDWMBlur = new System.Windows.Forms.CheckBox();
+            this.chkSystemAccent = new System.Windows.Forms.CheckBox();
+            this.cmdAccentColor = new System.Windows.Forms.Button();
+            this.tBarIntensity = new System.Windows.Forms.TrackBar();
+            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tBarIntensity)).BeginInit();
             this.SuspendLayout();
             // 
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(218, 324);
+            this.button1.Location = new System.Drawing.Point(303, 465);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(84, 30);
@@ -60,7 +66,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(127, 324);
+            this.button2.Location = new System.Drawing.Point(212, 465);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(84, 30);
@@ -89,7 +95,7 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(290, 103);
+            this.groupBox1.Size = new System.Drawing.Size(367, 103);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Connections";
@@ -134,7 +140,7 @@
             // 
             this.cboMenuAppearance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMenuAppearance.FormattingEnabled = true;
-            this.cboMenuAppearance.Location = new System.Drawing.Point(16, 185);
+            this.cboMenuAppearance.Location = new System.Drawing.Point(107, 154);
             this.cboMenuAppearance.Name = "cboMenuAppearance";
             this.cboMenuAppearance.Size = new System.Drawing.Size(179, 24);
             this.cboMenuAppearance.TabIndex = 5;
@@ -144,9 +150,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(16, 154);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(85, 17);
+            this.label1.Size = new System.Drawing.Size(43, 17);
             this.label1.TabIndex = 6;
-            this.label1.Text = "Appearance";
+            this.label1.Text = "Style:";
             // 
             // lblCurrentFont
             // 
@@ -161,16 +167,16 @@
             // 
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.lblCurrentFont);
-            this.groupBox2.Location = new System.Drawing.Point(11, 216);
+            this.groupBox2.Location = new System.Drawing.Point(16, 345);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(290, 93);
+            this.groupBox2.Size = new System.Drawing.Size(376, 101);
             this.groupBox2.TabIndex = 8;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "&Font";
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(207, 55);
+            this.button3.Location = new System.Drawing.Point(292, 58);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 30);
             this.button3.TabIndex = 8;
@@ -178,11 +184,70 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // chkDWMBlur
+            // 
+            this.chkDWMBlur.AutoSize = true;
+            this.chkDWMBlur.Location = new System.Drawing.Point(28, 188);
+            this.chkDWMBlur.Name = "chkDWMBlur";
+            this.chkDWMBlur.Size = new System.Drawing.Size(93, 21);
+            this.chkDWMBlur.TabIndex = 9;
+            this.chkDWMBlur.Text = "DWM Blur";
+            this.chkDWMBlur.UseVisualStyleBackColor = true;
+            this.chkDWMBlur.CheckedChanged += new System.EventHandler(this.chkDWMBlur_CheckedChanged);
+            // 
+            // chkSystemAccent
+            // 
+            this.chkSystemAccent.AutoSize = true;
+            this.chkSystemAccent.Location = new System.Drawing.Point(28, 221);
+            this.chkSystemAccent.Name = "chkSystemAccent";
+            this.chkSystemAccent.Size = new System.Drawing.Size(189, 21);
+            this.chkSystemAccent.TabIndex = 10;
+            this.chkSystemAccent.Text = "Use System Accent Color";
+            this.chkSystemAccent.UseVisualStyleBackColor = true;
+            this.chkSystemAccent.CheckedChanged += new System.EventHandler(this.chkSystemAccent_CheckedChanged);
+            // 
+            // cmdAccentColor
+            // 
+            this.cmdAccentColor.Location = new System.Drawing.Point(28, 248);
+            this.cmdAccentColor.Name = "cmdAccentColor";
+            this.cmdAccentColor.Size = new System.Drawing.Size(202, 34);
+            this.cmdAccentColor.TabIndex = 11;
+            this.cmdAccentColor.Text = "Custom Accent Color...";
+            this.cmdAccentColor.UseVisualStyleBackColor = true;
+            this.cmdAccentColor.Click += new System.EventHandler(this.cmdAccentColor_Click);
+            // 
+            // tBarIntensity
+            // 
+            this.tBarIntensity.LargeChange = 25;
+            this.tBarIntensity.Location = new System.Drawing.Point(100, 292);
+            this.tBarIntensity.Maximum = 255;
+            this.tBarIntensity.Name = "tBarIntensity";
+            this.tBarIntensity.Size = new System.Drawing.Size(212, 53);
+            this.tBarIntensity.SmallChange = 5;
+            this.tBarIntensity.TabIndex = 12;
+            this.tBarIntensity.TickFrequency = 5;
+            this.tBarIntensity.Value = 25;
+            this.tBarIntensity.ValueChanged += new System.EventHandler(this.tBarIntensity_ValueChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(30, 299);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(64, 17);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Intensity:";
+            // 
             // frmNetMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(313, 364);
+            this.ClientSize = new System.Drawing.Size(398, 505);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.tBarIntensity);
+            this.Controls.Add(this.cmdAccentColor);
+            this.Controls.Add(this.chkSystemAccent);
+            this.Controls.Add(this.chkDWMBlur);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.cboMenuAppearance);
@@ -202,6 +267,7 @@
             this.groupBox1.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.tBarIntensity)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -221,6 +287,11 @@
         private System.Windows.Forms.Label lblCurrentFont;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.CheckBox chkDWMBlur;
+        private System.Windows.Forms.CheckBox chkSystemAccent;
+        private System.Windows.Forms.Button cmdAccentColor;
+        private System.Windows.Forms.TrackBar tBarIntensity;
+        private System.Windows.Forms.Label label2;
     }
 }
 

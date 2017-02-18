@@ -17,11 +17,52 @@ using System.Windows.Forms;
 namespace Office2007Rendering
 {
     /// <summary>
-    /// Provide Office 2007 Blue Theme colors
+    ///     Provide Office 2007 Blue Theme colors
     /// </summary>
     public class Office2007ColorTable : ProfessionalColorTable
     {
+        #region Identity
+
+        #endregion
+
+        #region Check
+
+        /// <summary>
+        ///     Gets the solid color to use when the check box is selected and gradients are being used.
+        /// </summary>
+        public override Color CheckBackground
+        {
+            get { return _checkBack; }
+        }
+
+        #endregion
+
+        #region ImageMargin
+
+        /// <summary>
+        ///     Gets the starting color of the gradient used in the image margin of a ToolStripDropDownMenu.
+        /// </summary>
+        public override Color ImageMarginGradientBegin
+        {
+            get { return _imageMargin; }
+        }
+
+        #endregion
+
+        #region MenuBorder
+
+        /// <summary>
+        ///     Gets the border color or a MenuStrip.
+        /// </summary>
+        public override Color MenuBorder
+        {
+            get { return _menuBorder; }
+        }
+
+        #endregion
+
         #region Static Fixed Colors - Blue Color Scheme
+
         private static Color _contextMenuBack = Color.FromArgb(250, 250, 250);
         private static Color _buttonPressedBegin = Color.FromArgb(248, 181, 106);
         private static Color _buttonPressedEnd = Color.FromArgb(255, 208, 134);
@@ -50,20 +91,13 @@ namespace Office2007Rendering
         private static Color _toolStripEnd = Color.FromArgb(152, 186, 230);
         private static Color _toolStripMiddle = Color.FromArgb(222, 236, 255);
         private static Color _buttonBorder = Color.FromArgb(121, 153, 194);
-        #endregion
 
-        #region Identity
-        /// <summary>
-        /// Initialize a new instance of the Office2007ColorTable class.
-        /// </summary>
-        public Office2007ColorTable()
-        {
-        }
         #endregion
 
         #region ButtonPressed
+
         /// <summary>
-        /// Gets the starting color of the gradient used when the button is pressed down.
+        ///     Gets the starting color of the gradient used when the button is pressed down.
         /// </summary>
         public override Color ButtonPressedGradientBegin
         {
@@ -71,7 +105,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used when the button is pressed down.
+        ///     Gets the end color of the gradient used when the button is pressed down.
         /// </summary>
         public override Color ButtonPressedGradientEnd
         {
@@ -79,17 +113,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the middle color of the gradient used when the button is pressed down.
+        ///     Gets the middle color of the gradient used when the button is pressed down.
         /// </summary>
         public override Color ButtonPressedGradientMiddle
         {
             get { return _buttonPressedMiddle; }
         }
+
         #endregion
 
         #region ButtonSelected
+
         /// <summary>
-        /// Gets the starting color of the gradient used when the button is selected.
+        ///     Gets the starting color of the gradient used when the button is selected.
         /// </summary>
         public override Color ButtonSelectedGradientBegin
         {
@@ -97,7 +133,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used when the button is selected.
+        ///     Gets the end color of the gradient used when the button is selected.
         /// </summary>
         public override Color ButtonSelectedGradientEnd
         {
@@ -105,7 +141,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the middle color of the gradient used when the button is selected.
+        ///     Gets the middle color of the gradient used when the button is selected.
         /// </summary>
         public override Color ButtonSelectedGradientMiddle
         {
@@ -113,27 +149,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the border color to use with ButtonSelectedHighlight.
+        ///     Gets the border color to use with ButtonSelectedHighlight.
         /// </summary>
         public override Color ButtonSelectedHighlightBorder
         {
             get { return _buttonBorder; }
         }
-        #endregion
 
-        #region Check
-        /// <summary>
-        /// Gets the solid color to use when the check box is selected and gradients are being used.
-        /// </summary>
-        public override Color CheckBackground
-        {
-            get { return _checkBack; }
-        }
         #endregion
 
         #region Grip
+
         /// <summary>
-        /// Gets the color to use for shadow effects on the grip or move handle.
+        ///     Gets the color to use for shadow effects on the grip or move handle.
         /// </summary>
         public override Color GripDark
         {
@@ -141,37 +169,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the color to use for highlight effects on the grip or move handle.
+        ///     Gets the color to use for highlight effects on the grip or move handle.
         /// </summary>
         public override Color GripLight
         {
             get { return _gripLight; }
         }
-        #endregion
 
-        #region ImageMargin
-        /// <summary>
-        /// Gets the starting color of the gradient used in the image margin of a ToolStripDropDownMenu.
-        /// </summary>
-        public override Color ImageMarginGradientBegin
-        {
-            get { return _imageMargin; }
-        }
-        #endregion
-
-        #region MenuBorder
-        /// <summary>
-        /// Gets the border color or a MenuStrip.
-        /// </summary>
-        public override Color MenuBorder
-        {
-            get { return _menuBorder; }
-        }
         #endregion
 
         #region MenuItem
+
         /// <summary>
-        /// Gets the starting color of the gradient used when a top-level ToolStripMenuItem is pressed down.
+        ///     Gets the starting color of the gradient used when a top-level ToolStripMenuItem is pressed down.
         /// </summary>
         public override Color MenuItemPressedGradientBegin
         {
@@ -179,7 +189,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used when a top-level ToolStripMenuItem is pressed down.
+        ///     Gets the end color of the gradient used when a top-level ToolStripMenuItem is pressed down.
         /// </summary>
         public override Color MenuItemPressedGradientEnd
         {
@@ -187,7 +197,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the middle color of the gradient used when a top-level ToolStripMenuItem is pressed down.
+        ///     Gets the middle color of the gradient used when a top-level ToolStripMenuItem is pressed down.
         /// </summary>
         public override Color MenuItemPressedGradientMiddle
         {
@@ -195,7 +205,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the starting color of the gradient used when the ToolStripMenuItem is selected.
+        ///     Gets the starting color of the gradient used when the ToolStripMenuItem is selected.
         /// </summary>
         public override Color MenuItemSelectedGradientBegin
         {
@@ -203,17 +213,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used when the ToolStripMenuItem is selected.
+        ///     Gets the end color of the gradient used when the ToolStripMenuItem is selected.
         /// </summary>
         public override Color MenuItemSelectedGradientEnd
         {
             get { return _menuItemSelectedEnd; }
         }
+
         #endregion
 
         #region MenuStrip
+
         /// <summary>
-        /// Gets the starting color of the gradient used in the MenuStrip.
+        ///     Gets the starting color of the gradient used in the MenuStrip.
         /// </summary>
         public override Color MenuStripGradientBegin
         {
@@ -221,17 +233,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used in the MenuStrip.
+        ///     Gets the end color of the gradient used in the MenuStrip.
         /// </summary>
         public override Color MenuStripGradientEnd
         {
             get { return _menuToolBack; }
         }
+
         #endregion
 
         #region OverflowButton
+
         /// <summary>
-        /// Gets the starting color of the gradient used in the ToolStripOverflowButton.
+        ///     Gets the starting color of the gradient used in the ToolStripOverflowButton.
         /// </summary>
         public override Color OverflowButtonGradientBegin
         {
@@ -239,7 +253,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used in the ToolStripOverflowButton.
+        ///     Gets the end color of the gradient used in the ToolStripOverflowButton.
         /// </summary>
         public override Color OverflowButtonGradientEnd
         {
@@ -247,17 +261,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the middle color of the gradient used in the ToolStripOverflowButton.
+        ///     Gets the middle color of the gradient used in the ToolStripOverflowButton.
         /// </summary>
         public override Color OverflowButtonGradientMiddle
         {
             get { return _overflowMiddle; }
         }
+
         #endregion
 
         #region RaftingContainer
+
         /// <summary>
-        /// Gets the starting color of the gradient used in the ToolStripContainer.
+        ///     Gets the starting color of the gradient used in the ToolStripContainer.
         /// </summary>
         public override Color RaftingContainerGradientBegin
         {
@@ -265,17 +281,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used in the ToolStripContainer.
+        ///     Gets the end color of the gradient used in the ToolStripContainer.
         /// </summary>
         public override Color RaftingContainerGradientEnd
         {
             get { return _menuToolBack; }
         }
+
         #endregion
 
         #region Separator
+
         /// <summary>
-        /// Gets the color to use to for shadow effects on the ToolStripSeparator.
+        ///     Gets the color to use to for shadow effects on the ToolStripSeparator.
         /// </summary>
         public override Color SeparatorDark
         {
@@ -283,17 +301,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the color to use to for highlight effects on the ToolStripSeparator.
+        ///     Gets the color to use to for highlight effects on the ToolStripSeparator.
         /// </summary>
         public override Color SeparatorLight
         {
             get { return _separatorLight; }
         }
+
         #endregion
 
         #region StatusStrip
+
         /// <summary>
-        /// Gets the starting color of the gradient used on the StatusStrip.
+        ///     Gets the starting color of the gradient used on the StatusStrip.
         /// </summary>
         public override Color StatusStripGradientBegin
         {
@@ -301,17 +321,19 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used on the StatusStrip.
+        ///     Gets the end color of the gradient used on the StatusStrip.
         /// </summary>
         public override Color StatusStripGradientEnd
         {
             get { return _statusStripDark; }
         }
+
         #endregion
 
         #region ToolStrip
+
         /// <summary>
-        /// Gets the border color to use on the bottom edge of the ToolStrip.
+        ///     Gets the border color to use on the bottom edge of the ToolStrip.
         /// </summary>
         public override Color ToolStripBorder
         {
@@ -319,7 +341,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the starting color of the gradient used in the ToolStripContentPanel.
+        ///     Gets the starting color of the gradient used in the ToolStripContentPanel.
         /// </summary>
         public override Color ToolStripContentPanelGradientBegin
         {
@@ -327,7 +349,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used in the ToolStripContentPanel.
+        ///     Gets the end color of the gradient used in the ToolStripContentPanel.
         /// </summary>
         public override Color ToolStripContentPanelGradientEnd
         {
@@ -335,7 +357,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the solid background color of the ToolStripDropDown.
+        ///     Gets the solid background color of the ToolStripDropDown.
         /// </summary>
         public override Color ToolStripDropDownBackground
         {
@@ -343,7 +365,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the starting color of the gradient used in the ToolStrip background.
+        ///     Gets the starting color of the gradient used in the ToolStrip background.
         /// </summary>
         public override Color ToolStripGradientBegin
         {
@@ -351,7 +373,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used in the ToolStrip background.
+        ///     Gets the end color of the gradient used in the ToolStrip background.
         /// </summary>
         public override Color ToolStripGradientEnd
         {
@@ -359,7 +381,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the middle color of the gradient used in the ToolStrip background.
+        ///     Gets the middle color of the gradient used in the ToolStrip background.
         /// </summary>
         public override Color ToolStripGradientMiddle
         {
@@ -367,7 +389,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the starting color of the gradient used in the ToolStripPanel.
+        ///     Gets the starting color of the gradient used in the ToolStripPanel.
         /// </summary>
         public override Color ToolStripPanelGradientBegin
         {
@@ -375,12 +397,13 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Gets the end color of the gradient used in the ToolStripPanel.
+        ///     Gets the end color of the gradient used in the ToolStripPanel.
         /// </summary>
         public override Color ToolStripPanelGradientEnd
         {
             get { return _menuToolBack; }
         }
+
         #endregion
     }
 }

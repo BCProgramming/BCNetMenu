@@ -20,18 +20,21 @@ using System.Windows.Forms;
 namespace Office2007Rendering
 {
     /// <summary>
-    /// Set the SmoothingMode=AntiAlias until instance disposed.
+    ///     Set the SmoothingMode=AntiAlias until instance disposed.
     /// </summary>
     public class UseAntiAlias : IDisposable
     {
         #region Instance Fields
+
         private Graphics _g;
         private SmoothingMode _old;
+
         #endregion
 
         #region Identity
+
         /// <summary>
-        /// Initialize a new instance of the UseAntiAlias class.
+        ///     Initialize a new instance of the UseAntiAlias class.
         /// </summary>
         /// <param name="g">Graphics instance.</param>
         public UseAntiAlias(Graphics g)
@@ -42,28 +45,32 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Revert the SmoothingMode back to original setting.
+        ///     Revert the SmoothingMode back to original setting.
         /// </summary>
         public void Dispose()
         {
             _g.SmoothingMode = _old;
         }
+
         #endregion
     }
 
     /// <summary>
-    /// Set the TextRenderingHint.ClearTypeGridFit until instance disposed.
+    ///     Set the TextRenderingHint.ClearTypeGridFit until instance disposed.
     /// </summary>
     public class UseClearTypeGridFit : IDisposable
     {
         #region Instance Fields
+
         private Graphics _g;
         private TextRenderingHint _old;
+
         #endregion
 
         #region Identity
+
         /// <summary>
-        /// Initialize a new instance of the UseClearTypeGridFit class.
+        ///     Initialize a new instance of the UseClearTypeGridFit class.
         /// </summary>
         /// <param name="g">Graphics instance.</param>
         public UseClearTypeGridFit(Graphics g)
@@ -71,32 +78,35 @@ namespace Office2007Rendering
             _g = g;
             _old = _g.TextRenderingHint;
             _g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-
         }
 
         /// <summary>
-        /// Revert the TextRenderingHint back to original setting.
+        ///     Revert the TextRenderingHint back to original setting.
         /// </summary>
         public void Dispose()
         {
             _g.TextRenderingHint = _old;
         }
+
         #endregion
     }
 
     /// <summary>
-    /// Set the clipping region until instance disposed.
+    ///     Set the clipping region until instance disposed.
     /// </summary>
     public class UseClipping : IDisposable
     {
         #region Instance Fields
+
         private Graphics _g;
         private Region _old;
+
         #endregion
 
         #region Identity
+
         /// <summary>
-        /// Initialize a new instance of the UseClipping class.
+        ///     Initialize a new instance of the UseClipping class.
         /// </summary>
         /// <param name="g">Graphics instance.</param>
         /// <param name="path">Clipping path.</param>
@@ -110,7 +120,7 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Initialize a new instance of the UseClipping class.
+        ///     Initialize a new instance of the UseClipping class.
         /// </summary>
         /// <param name="g">Graphics instance.</param>
         /// <param name="region">Clipping region.</param>
@@ -124,13 +134,13 @@ namespace Office2007Rendering
         }
 
         /// <summary>
-        /// Revert clipping back to origina setting.
+        ///     Revert clipping back to origina setting.
         /// </summary>
         public void Dispose()
         {
             _g.Clip = _old;
         }
+
         #endregion
     }
-
 }
