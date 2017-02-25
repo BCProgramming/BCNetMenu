@@ -14,7 +14,7 @@ namespace BCNetMenu
     {
         protected bool _Blur = true;
         protected Color AccentColor = Color.Orange;
-        protected static Color DarkColor = Color.FromArgb(50, 50, 35, 10);
+        protected static Color DarkColor = Color.FromArgb(110, 50, 35, 10);
         protected static Brush DarkBrush = new SolidBrush(DarkColor);
         protected static Brush DarkBrushOpaque = new SolidBrush(Color.FromArgb(DarkColor.R, DarkColor.G, DarkColor.B));
         public Win10MenuRenderer(Color? pAccentColor = null, bool pBlur = true)

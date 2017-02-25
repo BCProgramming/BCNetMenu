@@ -222,8 +222,7 @@ namespace BCNetMenu
 
         private void IconMenu_Opening(object sender, CancelEventArgs e)
         {
-            //IconMenu.Renderer = GetConfiguredToolStripRenderer();
-            IconMenu.Renderer = new Win31Renderer();
+            IconMenu.Renderer = GetConfiguredToolStripRenderer();
             IconMenu.Items.Clear();
             IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
             IconMenu.ImageScalingSize = new Size(64, 64);
