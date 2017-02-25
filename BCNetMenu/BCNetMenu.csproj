@@ -71,6 +71,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Win10MenuRenderer.cs" />
+    <Compile Include="Win31Renderer.cs" />
     <EmbeddedResource Include="FrmNetMenu.resx">
       <DependentUpon>FrmNetMenu.cs</DependentUpon>
     </EmbeddedResource>

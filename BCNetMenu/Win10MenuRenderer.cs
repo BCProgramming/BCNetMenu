@@ -14,9 +14,9 @@ namespace BCNetMenu
     {
         protected bool _Blur = true;
         protected Color AccentColor = Color.Orange;
-
-        protected Brush DarkBrush = new SolidBrush(Color.FromArgb(50, 50, 35, 10));
-
+        protected static Color DarkColor = Color.FromArgb(50, 50, 35, 10);
+        protected static Brush DarkBrush = new SolidBrush(DarkColor);
+        protected static Brush DarkBrushOpaque = new SolidBrush(Color.FromArgb(DarkColor.R, DarkColor.G, DarkColor.B));
         public Win10MenuRenderer(Color? pAccentColor = null, bool pBlur = true)
         {
             _Blur = pBlur;
@@ -59,7 +59,7 @@ namespace BCNetMenu
             }
             else
             {
-                e.Graphics.FillRectangle(DarkBrush, e.AffectedBounds);
+                e.Graphics.FillRectangle(DarkBrushOpaque, e.AffectedBounds);
                 //base.OnRenderToolStripBackground(e);
             }
         }
@@ -83,10 +83,48 @@ namespace BCNetMenu
 
             e.Graphics.DrawLine(new Pen(Color.White, 2), useBounds.Left + 25, useBounds.Top + useBounds.Height / 2, useBounds.Right - 25, useBounds.Top + useBounds.Height / 2);
         }
+        private static Size? CachedLargestImageSize = null;
+        /*protected void CalcBoundaries(ToolStripItem item,out Rectangle TextBounds,out Rectangle ImageBounds)
+        {
+            //First: The Image size we want to consider is going to be the largest image size of the siblings.
+            if(CachedLargestImageSize==null)
+            {
+                foreach(var iterateitem in item.Owner.Items)
+                {
+                    if(iterateitem is ToolStripMenuItem)
+                    {
+                        ToolStripMenuItem castToolItem = iterateitem as ToolStripMenuItem;
+                        if(castToolItem.Image!=null)
+                        {
+                            if (CachedLargestImageSize == null)
+                                CachedLargestImageSize = castToolItem.Image.Size;
+                            else
+                            {
+                                if (CachedLargestImageSize.Value.Width < castToolItem.Image.Size.Width)
+                                    CachedLargestImageSize = new Size(castToolItem.Image.Size.Width, CachedLargestImageSize.Value.Width);
+                                if(CachedLargestImageSize.Value.Height < castToolItem.Image.Size.Height)
+                                    CachedLargestImageSize = new Size(CachedLargestImageSize.Value.Width,castToolItem.Image.Size.Height);
+                            }
+                        }
+                    }
+                }
+            }
 
+            //item.Owner.Items 
+        }*/
         protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
         {
             Rectangle useBounds = new Rectangle(0, 0, e.Item.Bounds.Width, e.Item.Bounds.Height);
+            Rectangle ImageBounds = Rectangle.Empty;
+            //if the item has an image, we want it to the left. Technically, we should respect the Alignment, but this isn't a general purpose "Win10 Style" menu renderer. At least not yet.
+            if(e.Item.Image!=null)
+            {
+                
+            }
+            if(!_Blur)
+            {
+                e.Graphics.FillRectangle(DarkBrush,useBounds);
+            }
             Brush useBrush = null;
             if (e.Item.Selected)
             {
@@ -124,43 +162,6 @@ namespace BCNetMenu
                 BlurRegion = 2,
                 TransitionMaximized = 4
             }
-
-            [DllImport("user32.dll")]
-            internal static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
-
-            [DllImport("dwmapi.dll")]
-            public static extern void DwmEnableBlurBehindWindow(IntPtr hwnd, ref DWM_BLURBEHIND blurBehind);
-
-            [DllImport("dwmapi.dll", EntryPoint = "#127")]
-            internal static extern void DwmGetColorizationParameters(ref DWMCOLORIZATIONPARAMS parms);
-
-            public static void EnableBlur(IntPtr WindowHandle)
-            {
-                var accent = new AccentPolicy();
-                var accentStructSize = Marshal.SizeOf(accent);
-                accent.AccentState = AccentState.ACCENT_ENABLE_BLURBEHIND;
-
-                var accentPtr = Marshal.AllocHGlobal(accentStructSize);
-                Marshal.StructureToPtr(accent, accentPtr, false);
-
-                var data = new WindowCompositionAttributeData();
-                data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
-                data.SizeOfData = accentStructSize;
-                data.Data = accentPtr;
-
-                SetWindowCompositionAttribute(WindowHandle, ref data);
-
-                Marshal.FreeHGlobal(accentPtr);
-            }
-
-            [StructLayout(LayoutKind.Sequential)]
-            internal struct WindowCompositionAttributeData
-            {
-                public WindowCompositionAttribute Attribute;
-                public IntPtr Data;
-                public int SizeOfData;
-            }
-
             internal enum WindowCompositionAttribute
             {
                 WCA_ACCENT_POLICY = 19
@@ -220,6 +221,41 @@ namespace BCNetMenu
                     hRgnBlur = region.GetHrgn(graphics);
                     dwFlags |= DWM_BB.BlurRegion;
                 }
+            }
+        
+
+
+        [DllImport("user32.dll")]
+            private static extern int SetWindowCompositionAttribute(IntPtr hwnd, ref WindowCompositionAttributeData data);
+           
+            [DllImport("dwmapi.dll", EntryPoint = "#127")]
+            internal static extern void DwmGetColorizationParameters(ref DWMCOLORIZATIONPARAMS parms);
+
+            public static void EnableBlur(IntPtr WindowHandle, bool pEnable=true)
+            {
+                var accent = new AccentPolicy();
+                var accentStructSize = Marshal.SizeOf(accent);
+                accent.AccentState = pEnable ? AccentState.ACCENT_ENABLE_BLURBEHIND : AccentState.ACCENT_DISABLED;
+                
+                var accentPtr = Marshal.AllocHGlobal(accentStructSize);
+                Marshal.StructureToPtr(accent, accentPtr, false);
+
+                var data = new WindowCompositionAttributeData();
+                data.Attribute = WindowCompositionAttribute.WCA_ACCENT_POLICY;
+                data.SizeOfData = accentStructSize;
+                data.Data = accentPtr;
+
+                SetWindowCompositionAttribute(WindowHandle, ref data);
+
+                Marshal.FreeHGlobal(accentPtr);
+            }
+
+            [StructLayout(LayoutKind.Sequential)]
+            internal struct WindowCompositionAttributeData
+            {
+                public WindowCompositionAttribute Attribute;
+                public IntPtr Data;
+                public int SizeOfData;
             }
         }
 

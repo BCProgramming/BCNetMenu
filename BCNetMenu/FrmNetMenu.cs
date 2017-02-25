@@ -27,7 +27,7 @@ namespace BCNetMenu
 {
     public partial class frmNetMenu : Form
     {
-        private bool _Blur = true;
+        //private bool _Blur = true;
         private Color _SelectedCustomAccentColor = Color.Red;
 
         private int FontSize = 14;
@@ -93,6 +93,7 @@ namespace BCNetMenu
             nIcon.ContextMenuStrip = IconMenu;
             IconMenu.Opening += IconMenu_Opening;
             IconMenu.Opened += IconMenu_Opened;
+            IconMenu.Closed += IconMenu_Closed;
             LoadedSettings = new NetMenuSettings();
             IconMenu.Renderer = GetConfiguredToolStripRenderer();
             lblCurrentFont.Text = GetFontDescription(LoadedSettings.WifiFont);
@@ -109,6 +110,11 @@ namespace BCNetMenu
             //these controls are disabled if not using the win10 renderer style.
             UpdateAccentState();
             UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, new TimeSpan(0, 0, 0, 10));
+        }
+
+        private void IconMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
+        {
+            IconMenu.Items.Clear();
         }
 
         private void UpdateAccentState()
@@ -128,12 +134,15 @@ namespace BCNetMenu
         private void IconMenu_Opened(object sender, EventArgs e)
         {
             //Now this one is a bit wacky, just an experiment.
-            if (_Blur && IconMenu.Renderer is Win10MenuRenderer) //blur is only available with the Win10 renderer, as presumably it would look really bad otherwise.
+            if (LoadedSettings.DWMBlur && IconMenu.Renderer is Win10MenuRenderer) //blur is only available with the Win10 renderer, as presumably it would look really bad otherwise.
             {
                 Win10MenuRenderer.DWMNativeMethods.DWM_BLURBEHIND bb = new Win10MenuRenderer.DWMNativeMethods.DWM_BLURBEHIND(true);
                 Win10MenuRenderer.DWMNativeMethods.EnableBlur(IconMenu.Handle);
             }
-
+            else
+            {
+                Win10MenuRenderer.DWMNativeMethods.EnableBlur(IconMenu.Handle,false);
+                }
             //throw new NotImplementedException();
         }
 
@@ -202,18 +211,19 @@ namespace BCNetMenu
                 return new ToolStripSystemRenderer();
             if (LoadedSettings.MenuRenderer.Equals("Windows 10 Foldout", StringComparison.OrdinalIgnoreCase))
             {
-                return new Win10MenuRenderer(useAccent, _Blur);
+                return new Win10MenuRenderer(useAccent, LoadedSettings.DWMBlur);
             }
             if (Environment.OSVersion.Version.Major >= 10)
             {
-                return new Win10MenuRenderer(useAccent, _Blur);
+                return new Win10MenuRenderer(useAccent, LoadedSettings.DWMBlur);
             }
             return new Office2007Renderer();
         }
 
         private void IconMenu_Opening(object sender, CancelEventArgs e)
         {
-            IconMenu.Renderer = GetConfiguredToolStripRenderer();
+            //IconMenu.Renderer = GetConfiguredToolStripRenderer();
+            IconMenu.Renderer = new Win31Renderer();
             IconMenu.Items.Clear();
             IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
             IconMenu.ImageScalingSize = new Size(64, 64);
@@ -518,6 +528,7 @@ namespace BCNetMenu
 
             public static IEnumerable<NetworkConnectionInfo> GetWirelessConnections()
             {
+                
                 WlanClient client = new WlanClient();
                 foreach (WlanInterface wlaninterface in client.Interfaces)
                 {
@@ -540,7 +551,7 @@ namespace BCNetMenu
                 }
 
                 Wifi wifi = new Wifi();
-
+                
                 var AccessPoints = wifi.GetAccessPoints();
 
                 foreach (var AccessPoint in AccessPoints)
