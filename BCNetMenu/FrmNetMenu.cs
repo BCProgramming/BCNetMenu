@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -219,7 +220,24 @@ namespace BCNetMenu
             }
             return new Office2007Renderer();
         }
+        private Bitmap Selectify(Image Source)
+        {
+            Color StartColor = Color.FromArgb(25, 200, 200, 200);
+            Color EndColor = Color.FromArgb(50, 200, 200, 200);
+            Bitmap result = new Bitmap(Source.Width,Source.Height);
+            using (Graphics buildresult = Graphics.FromImage(result))
+            {
+                buildresult.Clear(Color.Transparent);
+                buildresult.DrawImage(Source,new Point(0,0));
+                LinearGradientBrush lgb = new LinearGradientBrush(new Rectangle(0, 0, Source.Width, Source.Height), StartColor, EndColor, LinearGradientMode.ForwardDiagonal);
+                buildresult.DrawRectangle(new Pen(Color.White, 2), new Rectangle(0, 0, Source.Width, Source.Height));
+                buildresult.FillRectangle(lgb, new Rectangle(0, 0, Source.Width, Source.Height));
 
+
+            }
+            return result;
+
+        }
         private void IconMenu_Opening(object sender, CancelEventArgs e)
         {
             IconMenu.Renderer = GetConfiguredToolStripRenderer();
@@ -249,7 +267,9 @@ namespace BCNetMenu
                     tsm.Checked = stdcon.Connected;
 
                     var grabIcon = ((Icon) Resources.ResourceManager.GetObject("server_network"));
-                    tsm.Image = new Icon(grabIcon, 64, 64).ToBitmap();
+                    var useImage = new Icon(grabIcon, 64, 64).ToBitmap();
+                    if (tsm.Checked) useImage = Selectify(useImage);
+                    tsm.Image = useImage;
                     if (stdcon.Connected)
                     {
                         tsm.Click += vpndisconnect_Click;
@@ -289,7 +309,9 @@ namespace BCNetMenu
                     //tsm.Font = new Font(tsm.Font.FontFamily, FontSize, tsm.Font.Style);
 
                     var grabIcon = ((Icon) Resources.ResourceManager.GetObject(GetSignal((int) wirelesscon.APInfo.SignalStrength)));
-                    tsm.Image = new Icon(grabIcon, 64, 64).ToBitmap();
+                    Image useImage = new Icon(grabIcon, 64, 64).ToBitmap();
+                    if (tsm.Checked) useImage = Selectify(useImage);
+                    tsm.Image = useImage;
                     tsm.Font = LoadedSettings.WifiFont;
                     tsm.Tag = wirelesscon;
                     IconMenu.Items.Add(tsm);

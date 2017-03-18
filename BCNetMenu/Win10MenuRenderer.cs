@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Office2007Rendering;
 
 namespace BCNetMenu
 {
@@ -19,6 +20,7 @@ namespace BCNetMenu
         protected static Brush DarkBrushOpaque = new SolidBrush(Color.FromArgb(DarkColor.R, DarkColor.G, DarkColor.B));
         public Win10MenuRenderer(Color? pAccentColor = null, bool pBlur = true)
         {
+            
             _Blur = pBlur;
             if (pAccentColor != null)
             {
@@ -84,7 +86,8 @@ namespace BCNetMenu
             e.Graphics.DrawLine(new Pen(Color.White, 2), useBounds.Left + 25, useBounds.Top + useBounds.Height / 2, useBounds.Right - 25, useBounds.Top + useBounds.Height / 2);
         }
         private static Size? CachedLargestImageSize = null;
-        /*protected void CalcBoundaries(ToolStripItem item,out Rectangle TextBounds,out Rectangle ImageBounds)
+        private static Size? CachedLargestTextSize = null;
+        protected void CalcBoundaries(ToolStripItem item,Graphics g,out Rectangle TextBounds,out Rectangle ImageBounds)
         {
             //First: The Image size we want to consider is going to be the largest image size of the siblings.
             if(CachedLargestImageSize==null)
@@ -101,26 +104,40 @@ namespace BCNetMenu
                             else
                             {
                                 if (CachedLargestImageSize.Value.Width < castToolItem.Image.Size.Width)
-                                    CachedLargestImageSize = new Size(castToolItem.Image.Size.Width, CachedLargestImageSize.Value.Width);
+                                    CachedLargestImageSize = new Size(castToolItem.Image.Size.Width, CachedLargestImageSize.Value.Height);
                                 if(CachedLargestImageSize.Value.Height < castToolItem.Image.Size.Height)
                                     CachedLargestImageSize = new Size(CachedLargestImageSize.Value.Width,castToolItem.Image.Size.Height);
                             }
+                        }
+                        else if(castToolItem.Text.Length >0)
+                        {
+                            var MeasureSize = g.MeasureString(castToolItem.Text, castToolItem.Font);
+                            if (CachedLargestTextSize == null)
+                                CachedLargestTextSize = new Size((int)MeasureSize.Width,(int)MeasureSize.Height);
+                            else
+                            {
+                                if (CachedLargestTextSize.Value.Width < MeasureSize.Width)
+                                    CachedLargestTextSize = new Size((int)MeasureSize.Width, CachedLargestTextSize.Value.Height);
+                                if(CachedLargestTextSize.Value.Height < MeasureSize.Height)
+                                    CachedLargestTextSize = new Size(CachedLargestTextSize.Value.Width,(int)MeasureSize.Height);
+                            }
+
                         }
                     }
                 }
             }
 
+            ImageBounds = new Rectangle(item.Bounds.Left, item.Bounds.Top, CachedLargestImageSize.Value.Width, CachedLargestImageSize.Value.Height);
+            TextBounds = new Rectangle(item.Bounds.Left+ImageBounds.Width,item.Bounds.Top,item.Bounds.Right-ImageBounds.Right,item.Bounds.Height);
             //item.Owner.Items 
-        }*/
+        }
+        
         protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
         {
             Rectangle useBounds = new Rectangle(0, 0, e.Item.Bounds.Width, e.Item.Bounds.Height);
             Rectangle ImageBounds = Rectangle.Empty;
             //if the item has an image, we want it to the left. Technically, we should respect the Alignment, but this isn't a general purpose "Win10 Style" menu renderer. At least not yet.
-            if(e.Item.Image!=null)
-            {
-                
-            }
+           
             if(!_Blur)
             {
                 e.Graphics.FillRectangle(DarkBrush,useBounds);
