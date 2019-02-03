@@ -46,6 +46,7 @@
             this.cmdAccentColor = new System.Windows.Forms.Button();
             this.tBarIntensity = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
+            this.chkConnectionNotifications = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBarIntensity)).BeginInit();
@@ -54,7 +55,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(303, 465);
+            this.button1.Location = new System.Drawing.Point(303, 530);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(84, 30);
@@ -66,7 +67,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(212, 465);
+            this.button2.Location = new System.Drawing.Point(212, 530);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(84, 30);
@@ -78,7 +79,7 @@
             // chkAutoStart
             // 
             this.chkAutoStart.AutoSize = true;
-            this.chkAutoStart.Location = new System.Drawing.Point(11, 20);
+            this.chkAutoStart.Location = new System.Drawing.Point(11, 23);
             this.chkAutoStart.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkAutoStart.Name = "chkAutoStart";
             this.chkAutoStart.Size = new System.Drawing.Size(148, 21);
@@ -91,7 +92,7 @@
             this.groupBox1.Controls.Add(this.radBoth);
             this.groupBox1.Controls.Add(this.radWireless);
             this.groupBox1.Controls.Add(this.radVPN);
-            this.groupBox1.Location = new System.Drawing.Point(11, 45);
+            this.groupBox1.Location = new System.Drawing.Point(11, 120);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -140,7 +141,7 @@
             // 
             this.cboMenuAppearance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboMenuAppearance.FormattingEnabled = true;
-            this.cboMenuAppearance.Location = new System.Drawing.Point(107, 154);
+            this.cboMenuAppearance.Location = new System.Drawing.Point(107, 229);
             this.cboMenuAppearance.Name = "cboMenuAppearance";
             this.cboMenuAppearance.Size = new System.Drawing.Size(179, 24);
             this.cboMenuAppearance.TabIndex = 5;
@@ -148,7 +149,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(16, 154);
+            this.label1.Location = new System.Drawing.Point(18, 231);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 17);
             this.label1.TabIndex = 6;
@@ -167,7 +168,7 @@
             // 
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.lblCurrentFont);
-            this.groupBox2.Location = new System.Drawing.Point(16, 345);
+            this.groupBox2.Location = new System.Drawing.Point(16, 420);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(376, 101);
             this.groupBox2.TabIndex = 8;
@@ -187,7 +188,7 @@
             // chkDWMBlur
             // 
             this.chkDWMBlur.AutoSize = true;
-            this.chkDWMBlur.Location = new System.Drawing.Point(28, 188);
+            this.chkDWMBlur.Location = new System.Drawing.Point(28, 263);
             this.chkDWMBlur.Name = "chkDWMBlur";
             this.chkDWMBlur.Size = new System.Drawing.Size(93, 21);
             this.chkDWMBlur.TabIndex = 9;
@@ -198,7 +199,7 @@
             // chkSystemAccent
             // 
             this.chkSystemAccent.AutoSize = true;
-            this.chkSystemAccent.Location = new System.Drawing.Point(28, 221);
+            this.chkSystemAccent.Location = new System.Drawing.Point(28, 296);
             this.chkSystemAccent.Name = "chkSystemAccent";
             this.chkSystemAccent.Size = new System.Drawing.Size(189, 21);
             this.chkSystemAccent.TabIndex = 10;
@@ -208,7 +209,7 @@
             // 
             // cmdAccentColor
             // 
-            this.cmdAccentColor.Location = new System.Drawing.Point(28, 248);
+            this.cmdAccentColor.Location = new System.Drawing.Point(28, 323);
             this.cmdAccentColor.Name = "cmdAccentColor";
             this.cmdAccentColor.Size = new System.Drawing.Size(202, 34);
             this.cmdAccentColor.TabIndex = 11;
@@ -219,10 +220,10 @@
             // tBarIntensity
             // 
             this.tBarIntensity.LargeChange = 25;
-            this.tBarIntensity.Location = new System.Drawing.Point(100, 292);
+            this.tBarIntensity.Location = new System.Drawing.Point(100, 367);
             this.tBarIntensity.Maximum = 255;
             this.tBarIntensity.Name = "tBarIntensity";
-            this.tBarIntensity.Size = new System.Drawing.Size(212, 53);
+            this.tBarIntensity.Size = new System.Drawing.Size(212, 56);
             this.tBarIntensity.SmallChange = 5;
             this.tBarIntensity.TabIndex = 12;
             this.tBarIntensity.TickFrequency = 5;
@@ -232,17 +233,29 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(30, 299);
+            this.label2.Location = new System.Drawing.Point(30, 374);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(64, 17);
             this.label2.TabIndex = 13;
             this.label2.Text = "Intensity:";
             // 
+            // chkConnectionNotifications
+            // 
+            this.chkConnectionNotifications.AutoSize = true;
+            this.chkConnectionNotifications.Location = new System.Drawing.Point(12, 84);
+            this.chkConnectionNotifications.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.chkConnectionNotifications.Name = "chkConnectionNotifications";
+            this.chkConnectionNotifications.Size = new System.Drawing.Size(220, 21);
+            this.chkConnectionNotifications.TabIndex = 14;
+            this.chkConnectionNotifications.Text = "Show Connection Notifications";
+            this.chkConnectionNotifications.UseVisualStyleBackColor = true;
+            // 
             // frmNetMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(398, 505);
+            this.ClientSize = new System.Drawing.Size(398, 570);
+            this.Controls.Add(this.chkConnectionNotifications);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tBarIntensity);
             this.Controls.Add(this.cmdAccentColor);
@@ -292,6 +305,7 @@
         private System.Windows.Forms.Button cmdAccentColor;
         private System.Windows.Forms.TrackBar tBarIntensity;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.CheckBox chkConnectionNotifications;
     }
 }
 

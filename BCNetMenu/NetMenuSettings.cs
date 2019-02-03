@@ -21,6 +21,7 @@ namespace BCNetMenu
 
         private ConnectionDisplayType _ConnectionTypes = ConnectionDisplayType.Connection_Wireless | ConnectionDisplayType.Connection_VPN;
 
+        private bool _ConnectionNotifications = true;
         private bool _DWMBlur;
         private String _MenuRenderer = "Office 2007";
 
@@ -35,6 +36,9 @@ namespace BCNetMenu
         private Font _VPNFont = SystemFonts.MenuFont;
 
         private Font _WifiFont = SystemFonts.MenuFont;
+
+
+        public bool ConnectionNotifications { get { return _ConnectionNotifications; }  set { _ConnectionNotifications = value; }}
 
         public NetMenuSettings() : this(GetDefaultSettingsFilePath())
         {
@@ -56,6 +60,7 @@ namespace BCNetMenu
                 _MenuRenderer = RootElement.Attribute("Renderer") == null ? "System" : RootElement.Attribute("Renderer").Value;
                 _UseSystemAccentColor = RootElement.GetAttributeBool("UseSystemAccent", true);
                 _DWMBlur = RootElement.GetAttributeBool("DWMBlur", false);
+                _ConnectionNotifications = RootElement.GetAttributeBool("Notifications", true);
                 XElement WifiFontNode = RootElement.Element("WifiFont");
                 XElement VPNFontNode = RootElement.Element("VPNFont");
                 XElement NetMenuFontNode = RootElement.Element("NetMenuFont");
@@ -130,10 +135,12 @@ namespace BCNetMenu
             rootnode.Add(new XAttribute("Renderer", _MenuRenderer));
             rootnode.Add(new XAttribute("UseSystemAccent", _UseSystemAccentColor));
             rootnode.Add(new XAttribute("DWMBlur", _DWMBlur));
+            rootnode.Add(new XAttribute("Notifications", _ConnectionNotifications));
             rootnode.Add(StandardHelper.Static.SerializeObject(_WifiFont, "WifiFont", null));
             rootnode.Add(StandardHelper.Static.SerializeObject(_VPNFont, "VPNFont", null));
             rootnode.Add(StandardHelper.Static.SerializeObject(_NetMenuItemsFont, "NetMenuFont", null));
             rootnode.Add(StandardHelper.Static.SerializeObject(_OverrideAccentColor, "OverrideAccentColor", null));
+            
             try
             {
                 Directory.CreateDirectory(Path.GetDirectoryName(sXMLFile));

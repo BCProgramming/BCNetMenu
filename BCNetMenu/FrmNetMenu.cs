@@ -107,7 +107,7 @@ namespace BCNetMenu
             chkDWMBlur.Checked = LoadedSettings.DWMBlur;
             chkSystemAccent.Checked = LoadedSettings.UseSystemAccentColor;
             SelectedCustomAccentColor = LoadedSettings.OverrideAccentColor;
-
+            chkConnectionNotifications.Checked = LoadedSettings.ConnectionNotifications;
             //these controls are disabled if not using the win10 renderer style.
             UpdateAccentState();
             UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, new TimeSpan(0, 0, 0, 10));
@@ -393,7 +393,7 @@ namespace BCNetMenu
         {
             ToolStripMenuItem item = (ToolStripMenuItem) sender;
             NetworkConnectionInfo coninfo = item.Tag as NetworkConnectionInfo;
-            NetworkConnectionInfo.DisconnectVPN(nIcon, coninfo.Name);
+            NetworkConnectionInfo.DisconnectVPN(nIcon, coninfo.Name, LoadedSettings.ConnectionNotifications);
             //throw new NotImplementedException();
         }
 
@@ -401,7 +401,7 @@ namespace BCNetMenu
         {
             ToolStripMenuItem item = (ToolStripMenuItem) sender;
             NetworkConnectionInfo coninfo = item.Tag as NetworkConnectionInfo;
-            NetworkConnectionInfo.ConnectVPN(nIcon, coninfo.Name);
+            NetworkConnectionInfo.ConnectVPN(nIcon, coninfo.Name,LoadedSettings.ConnectionNotifications);
             //throw new NotImplementedException();
         }
 
@@ -452,7 +452,7 @@ namespace BCNetMenu
             LoadedSettings.DWMBlur = chkDWMBlur.Checked;
             LoadedSettings.OverrideAccentColor = SelectedCustomAccentColor;
             LoadedSettings.UseSystemAccentColor = chkSystemAccent.Checked;
-
+            LoadedSettings.ConnectionNotifications = chkConnectionNotifications.Checked;
 
             LoadedSettings.Save();
             Hide();
@@ -610,17 +610,23 @@ namespace BCNetMenu
                 }
             }
 
-            public static void ConnectVPN(NotifyIcon ni, String VPNName)
+            public static void ConnectVPN(NotifyIcon ni, String VPNName, bool ShowNotification = true)
             {
-                Process p = Process.Start("rasphone.exe", "-d " + VPNName);
-                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN \"" + VPNName + "\"", ToolTipIcon.Info); };
+                if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
+                ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-d " + VPNName);
+                Process p = Process.Start(psi);
+                p.EnableRaisingEvents = ShowNotification;
+                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN " + VPNName + ".", ToolTipIcon.Info); };
             }
 
 
-            public static void DisconnectVPN(NotifyIcon ni, String VPNName)
+            public static void DisconnectVPN(NotifyIcon ni, String VPNName,bool ShowNotification = true)
             {
-                Process p = Process.Start("rasphone.exe", "-h " + VPNName);
-                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN \"" + VPNName + "\"", ToolTipIcon.Info); };
+                if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
+                ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-h " + VPNName);
+                Process p = Process.Start(psi);
+                p.EnableRaisingEvents = ShowNotification;
+                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); };
             }
         }
     }
