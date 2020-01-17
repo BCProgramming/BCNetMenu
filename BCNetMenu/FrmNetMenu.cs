@@ -188,8 +188,8 @@ namespace BCNetMenu
                 if(sResult.Length >=63)
                 {
                     List<String> ConnectionInfo = new List<string>();
-                    ConnectionInfo.Add(ConnectedVPNs.Length == 0 ? "" : ConnectedVPNs.Length + " VPNs ");
-                    ConnectionInfo.Add(ConnectedWireless.Length == 0 ? "" : ConnectedWireless.Length + " APs");
+                    if (ConnectedVPNs.Length > 0) ConnectionInfo.Add(ConnectedVPNs.Length + " VPNs ");
+                    if(ConnectedWireless.Length >0) ConnectionInfo.Add(ConnectedWireless.Length + " APs");
                     sResult =  "Connected:" + String.Join(";", ConnectionInfo);
                     
                 }
