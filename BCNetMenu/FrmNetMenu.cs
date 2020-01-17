@@ -154,7 +154,7 @@ namespace BCNetMenu
         private void TipTimer(object State)
         {
             String UpdatedTip = GetUpdatedTip();
-            nIcon.Text = "BCNetMenu - " + UpdatedTip;
+            nIcon.Text =  UpdatedTip;
         }
 
         private String GetUpdatedTip()
@@ -184,8 +184,16 @@ namespace BCNetMenu
                     wirelessconnections = new List<NetworkConnectionInfo>();
                 }
                 String[] ConnectedWireless = (from c in wirelessconnections where c != null && c.Connected select c.Name).ToArray();
-
-                return "Connected to " + String.Join(",", ConnectedVPNs) + "; " + String.Join(",", ConnectedWireless);
+                String sResult = "Connected to " + String.Join(",", ConnectedVPNs) + "; " + String.Join(",", ConnectedWireless); 
+                if(sResult.Length >=63)
+                {
+                    List<String> ConnectionInfo = new List<string>();
+                    ConnectionInfo.Add(ConnectedVPNs.Length == 0 ? "" : ConnectedVPNs.Length + " VPNs ");
+                    ConnectionInfo.Add(ConnectedWireless.Length == 0 ? "" : ConnectedWireless.Length + " APs");
+                    sResult =  "Connected:" + String.Join(";", ConnectionInfo);
+                    
+                }
+                return sResult;
             }
             catch (Exception exx)
             {
