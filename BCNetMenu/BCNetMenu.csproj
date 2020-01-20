@@ -70,6 +70,11 @@
     <Compile Include="Office2007Renderer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Win10MenuRenderer.cs" />
     <Compile Include="Win31Renderer.cs" />
     <EmbeddedResource Include="FrmNetMenu.resx">
@@ -77,14 +82,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -125,6 +125,26 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="network_computer.ico" />
+    <None Include="Resources\XP Network_disabled.ico" />
+    <None Include="Resources\Network %284%29_disabled.ico" />
+    <None Include="Resources\Network %287%29_disabled.ICO" />
+    <None Include="Resources\Network %289%29_disabled.ico" />
+    <None Include="Resources\Network Connections_disabled.ico" />
+    <None Include="Resources\network_computer_disabled.ico" />
+    <None Include="Resources\Network.ico" />
+    <None Include="Resources\Network Shedual.ico" />
+    <None Include="Resources\Network Monitor.ico" />
+    <None Include="Resources\Network Connections.ico" />
+    <None Include="Resources\Network Connection Manager.ico" />
+    <None Include="Resources\Network %289%29.ico" />
+    <None Include="Resources\Network %288%29.ico" />
+    <None Include="Resources\Network %287%29.ICO" />
+    <None Include="Resources\Network %286%29.ico" />
+    <None Include="Resources\Network %285%29.ico" />
+    <None Include="Resources\Network %284%29.ico" />
+    <None Include="Resources\Network %283%29.ico" />
+    <None Include="Resources\XP Network.ico" />
+    <None Include="Resources\Network - Windows.ICO" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

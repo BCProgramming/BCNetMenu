@@ -36,7 +36,8 @@ namespace BCNetMenu
         private Font _VPNFont = SystemFonts.MenuFont;
 
         private Font _WifiFont = SystemFonts.MenuFont;
-
+        private const String DEFAULT_ICON = "network_computer";
+        private String _IconSetting = DEFAULT_ICON;
 
         public bool ConnectionNotifications { get { return _ConnectionNotifications; }  set { _ConnectionNotifications = value; }}
 
@@ -60,6 +61,7 @@ namespace BCNetMenu
                 _MenuRenderer = RootElement.Attribute("Renderer") == null ? "System" : RootElement.Attribute("Renderer").Value;
                 _UseSystemAccentColor = RootElement.GetAttributeBool("UseSystemAccent", true);
                 _DWMBlur = RootElement.GetAttributeBool("DWMBlur", false);
+                _IconSetting = RootElement.GetAttributeString("Icon", DEFAULT_ICON);
                 _ConnectionNotifications = RootElement.GetAttributeBool("Notifications", true);
                 XElement WifiFontNode = RootElement.Element("WifiFont");
                 XElement VPNFontNode = RootElement.Element("VPNFont");
@@ -115,7 +117,11 @@ namespace BCNetMenu
             get { return _NetMenuItemsFont; }
             set { _NetMenuItemsFont = value; }
         }
-
+        public String IconSetting
+        {
+            get { return _IconSetting; }
+            set { _IconSetting = value; }
+        }
         public bool DWMBlur
         {
             get { return _DWMBlur; }
@@ -136,6 +142,7 @@ namespace BCNetMenu
             rootnode.Add(new XAttribute("UseSystemAccent", _UseSystemAccentColor));
             rootnode.Add(new XAttribute("DWMBlur", _DWMBlur));
             rootnode.Add(new XAttribute("Notifications", _ConnectionNotifications));
+            rootnode.Add(new XAttribute("Icon", _IconSetting));
             rootnode.Add(StandardHelper.Static.SerializeObject(_WifiFont, "WifiFont", null));
             rootnode.Add(StandardHelper.Static.SerializeObject(_VPNFont, "VPNFont", null));
             rootnode.Add(StandardHelper.Static.SerializeObject(_NetMenuItemsFont, "NetMenuFont", null));

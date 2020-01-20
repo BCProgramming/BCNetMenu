@@ -5,6 +5,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -80,13 +81,71 @@ namespace BCNetMenu
             canvas.Dispose();
             target.Image = colorimage;
         }
+        Dictionary<String,String> IconListing = new Dictionary<string, string>() {
+            { "Flat Network Computer","network_computer" },
+            { "XP Network Icon","XP_Network"},
+            { "Dual Network Icon","Dual_Network"},
+            { "Earth Icon","Network_Connections" },
+            { "Vista Style Icon","Vista_Network" }
 
+        };
+        private Icon GetIcon(String sName)
+        {
+            if(File.Exists(sName))
+            {
+                try
+                {
+                    Icon LoadIcon = new Icon(sName);
+                    return LoadIcon;
+                }
+                catch(Exception LoadException)
+                {
+                    
+                }
+            }
+            
+            object obj = Resources.ResourceManager.GetObject(sName, Resources.Culture);
+            return ((System.Drawing.Icon)(obj));
+            
+        }
+        private Icon GetIcon()
+        {
+            //get standard icon based on settings.
+            //first of all, does the setting reflect an actual file?
+            String sIcon = LoadedSettings.IconSetting;
+            GetConnectionsInfo(out List<NetworkConnectionInfo> standardconnections, out List<NetworkConnectionInfo> wirelessconnections);
+            if(!standardconnections.Any((s)=>s.Connected) && !wirelessconnections.Any((s)=>s.Connected))
+            {
+                //use disabled icon.
+                sIcon = GetDisabledIcon(LoadedSettings.IconSetting);
+                
+            }
+
+
+
+            return GetIcon(sIcon);
+        }
+        private String GetDisabledIcon(String sStandard)
+        {
+            if(File.Exists(sStandard))
+            {
+                String sDisabled = Path.Combine(Path.GetDirectoryName(sStandard), Path.GetFileNameWithoutExtension(sStandard) + "_disabled" + Path.GetExtension(sStandard));
+                if (File.Exists(sDisabled))
+                    return sDisabled;
+                else
+                    return sStandard;
+            }
+            else
+            {
+                return sStandard + "_disabled";
+            }
+        }
         private void Form1_Load(object sender, EventArgs e)
         {
             cboMenuAppearance.Items.AddRange(new[] {"System", "Professional", "Office 2007", "Windows 10 Foldout"});
             Icon = Resources.network_computer;
             nIcon = new NotifyIcon();
-            nIcon.Icon = Resources.network_computer;
+            
             nIcon.Text = "BASeCamp Network Menu";
             nIcon.Click += NIcon_Click;
             IconMenu = new ContextMenuStrip();
@@ -96,6 +155,7 @@ namespace BCNetMenu
             IconMenu.Opened += IconMenu_Opened;
             IconMenu.Closed += IconMenu_Closed;
             LoadedSettings = new NetMenuSettings();
+            nIcon.Icon = GetIcon();
             IconMenu.Renderer = GetConfiguredToolStripRenderer();
             lblCurrentFont.Text = GetFontDescription(LoadedSettings.WifiFont);
             lblCurrentFont.Font = LoadedSettings.WifiFont;
@@ -111,6 +171,7 @@ namespace BCNetMenu
             //these controls are disabled if not using the win10 renderer style.
             UpdateAccentState();
             UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, new TimeSpan(0, 0, 0, 10));
+            
         }
 
         private void IconMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
@@ -150,39 +211,45 @@ namespace BCNetMenu
         private void NIcon_MouseMove(object sender, MouseEventArgs e)
         {
         }
-
         private void TipTimer(object State)
         {
             String UpdatedTip = GetUpdatedTip();
             nIcon.Text =  UpdatedTip;
+            nIcon.Icon = GetIcon();
+        }
+
+        private void GetConnectionsInfo(out List<NetworkConnectionInfo> standardconnections,out List<NetworkConnectionInfo> wirelessconnections)
+        {
+            try
+            {
+                standardconnections = NetworkConnectionInfo.GetConnections().ToList();
+            }
+            catch (Exception exx)
+            {
+                standardconnections = new List<NetworkConnectionInfo>();
+            }
+
+            
+
+            try
+            {
+                wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
+            }
+            catch (Exception exx)
+            {
+                wirelessconnections = new List<NetworkConnectionInfo>();
+            }
         }
 
         private String GetUpdatedTip()
         {
             try
             {
-                List<NetworkConnectionInfo> standardconnections;
-                List<NetworkConnectionInfo> wirelessconnections;
+                
+                
                 //retrieves the connected VPN and Wireless connections.
-                try
-                {
-                    standardconnections = NetworkConnectionInfo.GetConnections().ToList();
-                }
-                catch (Exception exx)
-                {
-                    standardconnections = new List<NetworkConnectionInfo>();
-                }
-
+                GetConnectionsInfo(out List<NetworkConnectionInfo> standardconnections,out List<NetworkConnectionInfo> wirelessconnections);
                 String[] ConnectedVPNs = (from c in standardconnections where c != null && c.Connected select c.Name).ToArray();
-
-                try
-                {
-                    wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
-                }
-                catch (Exception exx)
-                {
-                    wirelessconnections = new List<NetworkConnectionInfo>();
-                }
                 String[] ConnectedWireless = (from c in wirelessconnections where c != null && c.Connected select c.Name).ToArray();
                 String sResult = "Connected to " + String.Join(",", ConnectedVPNs) + "; " + String.Join(",", ConnectedWireless); 
                 if(sResult.Length >=63)
@@ -395,21 +462,22 @@ namespace BCNetMenu
                     coninfo.APInfo.Connect(new AuthRequest(coninfo.APInfo), false);
                 }
             }
+            nIcon.Icon = GetIcon();
         }
 
         private void vpndisconnect_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = (ToolStripMenuItem) sender;
             NetworkConnectionInfo coninfo = item.Tag as NetworkConnectionInfo;
-            NetworkConnectionInfo.DisconnectVPN(nIcon, coninfo.Name, LoadedSettings.ConnectionNotifications);
-            //throw new NotImplementedException();
+            NetworkConnectionInfo.DisconnectVPN(nIcon, coninfo.Name, LoadedSettings.ConnectionNotifications, () => { nIcon.Icon = GetIcon(); });
+            
         }
 
         private void vpnconnect_Click(object sender, EventArgs e)
         {
             ToolStripMenuItem item = (ToolStripMenuItem) sender;
             NetworkConnectionInfo coninfo = item.Tag as NetworkConnectionInfo;
-            NetworkConnectionInfo.ConnectVPN(nIcon, coninfo.Name,LoadedSettings.ConnectionNotifications);
+            NetworkConnectionInfo.ConnectVPN(nIcon, coninfo.Name,LoadedSettings.ConnectionNotifications,()=> { nIcon.Icon = GetIcon(); });
             //throw new NotImplementedException();
         }
 
@@ -618,23 +686,24 @@ namespace BCNetMenu
                 }
             }
 
-            public static void ConnectVPN(NotifyIcon ni, String VPNName, bool ShowNotification = true)
+            public static void ConnectVPN(NotifyIcon ni, String VPNName, bool ShowNotification = true,Action CompleteAction = null)
             {
                 if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
                 ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-d " + VPNName);
                 Process p = Process.Start(psi);
                 p.EnableRaisingEvents = ShowNotification;
-                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN " + VPNName + ".", ToolTipIcon.Info); };
+                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN " + VPNName + ".", ToolTipIcon.Info); CompleteAction?.Invoke(); };
+                
             }
 
 
-            public static void DisconnectVPN(NotifyIcon ni, String VPNName,bool ShowNotification = true)
+            public static void DisconnectVPN(NotifyIcon ni, String VPNName,bool ShowNotification = true, Action CompleteAction = null)
             {
                 if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
                 ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-h " + VPNName);
                 Process p = Process.Start(psi);
                 p.EnableRaisingEvents = ShowNotification;
-                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); };
+                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke(); };
             }
         }
     }
