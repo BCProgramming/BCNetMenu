@@ -692,7 +692,18 @@ namespace BCNetMenu
                 ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-d " + VPNName);
                 Process p = Process.Start(psi);
                 p.EnableRaisingEvents = ShowNotification;
-                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN " + VPNName + ".", ToolTipIcon.Info); CompleteAction?.Invoke(); };
+                p.Exited += (o, s) => {
+
+                    if (p.ExitCode == 0)
+                    {
+                        ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN " + VPNName + ".", ToolTipIcon.Info);
+                        CompleteAction?.Invoke();
+                    }
+                    else
+                    {
+                        ni.ShowBalloonTip(5000, "Connection Failed", "Failed to Establish connection to VPN " + VPNName + ".", ToolTipIcon.Info);
+                    }
+                };
                 
             }
 
@@ -703,7 +714,9 @@ namespace BCNetMenu
                 ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-h " + VPNName);
                 Process p = Process.Start(psi);
                 p.EnableRaisingEvents = ShowNotification;
-                p.Exited += (o, s) => { ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke(); };
+                p.Exited += (o, s) => {
+                    ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke();
+                };
             }
         }
     }
