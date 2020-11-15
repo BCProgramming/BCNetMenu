@@ -108,11 +108,17 @@ namespace BCNetMenu
             return ((System.Drawing.Icon)(obj));
             
         }
+        
         private Icon GetIcon()
         {
+
+            
+
             //get standard icon based on settings.
             //first of all, does the setting reflect an actual file?
             String sIcon = LoadedSettings.IconSetting;
+            
+            
             GetConnectionsInfo(out List<NetworkConnectionInfo> standardconnections, out List<NetworkConnectionInfo> wirelessconnections);
             if(!standardconnections.Any((s)=>s.Connected) && !wirelessconnections.Any((s)=>s.Connected))
             {
@@ -121,7 +127,8 @@ namespace BCNetMenu
                 
             }
 
-
+            Icon tryresource = (Icon)Resources.ResourceManager.GetObject(sIcon);
+            if (tryresource != null) return tryresource;
 
             return GetIcon(sIcon);
         }
@@ -140,6 +147,66 @@ namespace BCNetMenu
                 return sStandard + "_disabled";
             }
         }
+        private void PopulateIconSplit(DropSplitButton target, Dictionary<String,String> TextLookup,NetMenuSettings Settings)
+        {
+            //First we determine which key is selected. We will search through both keys and values.
+            var CurrentSetting = Settings.IconSetting;
+            KeyValuePair<String, String> CurrentSettingkvp;
+            if (TextLookup.ContainsKey(CurrentSetting))
+            {
+                CurrentSettingkvp = new KeyValuePair<string, string>(CurrentSetting, TextLookup[CurrentSetting]);
+            }
+            else if (File.Exists(CurrentSetting))
+            {
+                target.Image = GetIcon(CurrentSetting).ToBitmap();
+                target.Text = Path.GetFileNameWithoutExtension(CurrentSetting);
+                return;
+            }
+            else
+            {
+                int foundindex = -1;
+                //might be a value.
+                var searcharray = TextLookup.Values.ToArray();
+                for (int i = 0; i < searcharray.Length; i++)
+                {
+                    if (searcharray[i].Equals(CurrentSetting, StringComparison.OrdinalIgnoreCase))
+                    {
+                        foundindex = i;
+                        break;
+                    }
+                }
+                if (foundindex > -1)
+                {
+                    CurrentSetting = searcharray[foundindex];
+                    target.Image = GetIcon(CurrentSetting).ToBitmap();
+                    target.Text = TextLookup.Keys.ToArray()[foundindex];
+                }
+            }
+            ContextMenuStrip cms = new ContextMenuStrip();
+            target.SplitMenuStrip = cms;
+            target.ShowSplit = true;
+            //fill the listing
+            foreach (var iteratekvp in TextLookup)
+            {
+                String sAppDirectory = Path.GetDirectoryName(Application.ExecutablePath);
+                var gotico = GetIcon(iteratekvp.Value);
+                if(gotico!=null)
+                    {
+                    ToolStripMenuItem tms = new ToolStripMenuItem(iteratekvp.Value, gotico.ToBitmap());
+                    tms.Tag = iteratekvp;
+                    tms.Click += (o, e) =>
+                    {
+                        Settings.IconSetting = ((KeyValuePair<String, String>)((ToolStripMenuItem)o).Tag).Value;
+                        target.Image = ((ToolStripMenuItem)o).Image;
+                    };
+                    target.SplitMenuStrip.Items.Add(tms);
+                }
+                
+            }
+            
+
+        }
+        private static readonly TimeSpan UpdateTimeDelay = new TimeSpan(0, 0, 0, 3);
         private void Form1_Load(object sender, EventArgs e)
         {
             cboMenuAppearance.Items.AddRange(new[] {"System", "Professional", "Office 2007", "Windows 10 Foldout"});
@@ -170,8 +237,8 @@ namespace BCNetMenu
             chkConnectionNotifications.Checked = LoadedSettings.ConnectionNotifications;
             //these controls are disabled if not using the win10 renderer style.
             UpdateAccentState();
-            UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, new TimeSpan(0, 0, 0, 10));
-            
+            UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, UpdateTimeDelay);
+            PopulateIconSplit(NotificationIconSplit,IconListing,LoadedSettings);
         }
 
         private void IconMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
@@ -216,8 +283,60 @@ namespace BCNetMenu
             String UpdatedTip = GetUpdatedTip();
             nIcon.Text =  UpdatedTip;
             nIcon.Icon = GetIcon();
-        }
 
+
+            //Update state regarding connections too.
+            List<NetworkConnectionInfo> NewStandard = null, newWireless = null;
+            GetConnectionsInfo(out NewStandard, out newWireless);
+            NewStandard.RemoveAll((g) => !g.Connected);
+            newWireless.RemoveAll((g) => !g.Connected);
+            if(PreviousStandard!=null && PreviousWireless!=null)
+            {
+                
+           
+
+                if (this.LoadedSettings.DisconnectNotifications)
+                {
+                    //first find any new standard connections.
+                    var ConnectedStandard = (from c in NewStandard where !PreviousStandard.Any((a)=>a.Name==c.Name) select c).ToList();
+                    var DisconnectedStandard = (from c in PreviousStandard where  !NewStandard.Any((a) => a.Name == c.Name) select c).ToList();
+
+                    //now evaluate wireless connections.
+
+                    var ConnectedWireless = (from w in newWireless where !PreviousWireless.Any((a) => a.Name == w.Name) select w).ToList();
+                    var DisconnectedWireless = (from w in PreviousWireless where !newWireless.Any((a) => a.Name == w.Name) select w).ToList();
+                    String buildNotificationText = "";
+                    if (DisconnectedStandard.Any() || DisconnectedWireless.Any())
+                    {
+                        //wireless or standard connection was disconnected. build a string for a description and show a notification regarding what disconnected.
+                        buildNotificationText  = "Disconnected: " + String.Join(",", from s in DisconnectedStandard.Concat(DisconnectedWireless) select s.Name);
+
+                    }
+                    if(ConnectedWireless.Any() || ConnectedStandard.Any())
+                    {
+                        buildNotificationText += Environment.NewLine + "Connected: " + String.Join(",", from s in ConnectedStandard.Concat(ConnectedWireless) select s.Name);
+                    }
+                    if(!String.IsNullOrEmpty(buildNotificationText))
+                    {
+                        String TipTitle = "Connection Changes";
+                        bool connectedOnly = !DisconnectedWireless.Any() && !DisconnectedStandard.Any();
+                        bool disconnectedOnly = !ConnectedWireless.Any() && !ConnectedStandard.Any();
+                        if (connectedOnly)
+                            TipTitle = "New Connections";
+                        else if (disconnectedOnly)
+                            TipTitle = "Disconnections";
+
+                        nIcon.ShowBalloonTip(5000, TipTitle, buildNotificationText, ToolTipIcon.Info);
+
+                            //ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke();
+                    }
+                }
+            }
+            PreviousStandard = NewStandard;
+            PreviousWireless = newWireless;
+
+        }
+        private List<NetworkConnectionInfo> PreviousStandard = null, PreviousWireless = null;
         private void GetConnectionsInfo(out List<NetworkConnectionInfo> standardconnections,out List<NetworkConnectionInfo> wirelessconnections)
         {
             try
@@ -469,7 +588,7 @@ namespace BCNetMenu
         {
             ToolStripMenuItem item = (ToolStripMenuItem) sender;
             NetworkConnectionInfo coninfo = item.Tag as NetworkConnectionInfo;
-            NetworkConnectionInfo.DisconnectVPN(nIcon, coninfo.Name, LoadedSettings.ConnectionNotifications, () => { nIcon.Icon = GetIcon(); });
+            NetworkConnectionInfo.DisconnectVPN(nIcon, coninfo.Name, false, () => { nIcon.Icon = GetIcon(); });
             
         }
 
@@ -477,7 +596,7 @@ namespace BCNetMenu
         {
             ToolStripMenuItem item = (ToolStripMenuItem) sender;
             NetworkConnectionInfo coninfo = item.Tag as NetworkConnectionInfo;
-            NetworkConnectionInfo.ConnectVPN(nIcon, coninfo.Name,LoadedSettings.ConnectionNotifications,()=> { nIcon.Icon = GetIcon(); });
+            NetworkConnectionInfo.ConnectVPN(nIcon, coninfo.Name,false,()=> { nIcon.Icon = GetIcon(); });
             //throw new NotImplementedException();
         }
 
@@ -685,38 +804,58 @@ namespace BCNetMenu
                     yield return new NetworkConnectionInfo(iterate, false, null, null);
                 }
             }
-
+            public static bool ConnectionInProgress = false;
             public static void ConnectVPN(NotifyIcon ni, String VPNName, bool ShowNotification = true,Action CompleteAction = null)
             {
-                if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
-                ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-d " + VPNName);
-                Process p = Process.Start(psi);
-                p.EnableRaisingEvents = ShowNotification;
-                p.Exited += (o, s) => {
+                ConnectionInProgress = true;
+                try
+                {
+                    if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
+                    ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-d " + VPNName);
+                    Process p = Process.Start(psi);
+                    p.EnableRaisingEvents = ShowNotification;
+                    p.Exited += (o, s) =>
+                    {
 
-                    if (p.ExitCode == 0)
-                    {
-                        ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN " + VPNName + ".", ToolTipIcon.Info);
-                        CompleteAction?.Invoke();
-                    }
-                    else
-                    {
-                        ni.ShowBalloonTip(5000, "Connection Failed", "Failed to Establish connection to VPN " + VPNName + ".", ToolTipIcon.Info);
-                    }
-                };
+                        if (p.ExitCode == 0)
+                        {
+                            if(ShowNotification) ni.ShowBalloonTip(5000, "Connection Established", "Established connection to VPN " + VPNName + ".", ToolTipIcon.Info);
+                            CompleteAction?.Invoke();
+                        }
+                        else
+                        {
+                            if (ShowNotification)
+                                ni.ShowBalloonTip(5000, "Connection Failed", "Failed to Establish connection to VPN " + VPNName + ".", ToolTipIcon.Info);
+                        }
+                    };
+                }
+                finally
+                {
+                    ConnectionInProgress = false;
+                }
                 
             }
 
 
             public static void DisconnectVPN(NotifyIcon ni, String VPNName,bool ShowNotification = true, Action CompleteAction = null)
             {
-                if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
-                ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-h " + VPNName);
-                Process p = Process.Start(psi);
-                p.EnableRaisingEvents = ShowNotification;
-                p.Exited += (o, s) => {
-                    ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke();
-                };
+                ConnectionInProgress = true;
+                try
+                {
+                    if (VPNName.Contains(" ")) VPNName = "\"" + VPNName + "\"";
+                    ProcessStartInfo psi = new ProcessStartInfo("rasphone.exe", "-h " + VPNName);
+                    Process p = Process.Start(psi);
+                    p.EnableRaisingEvents = ShowNotification;
+                    p.Exited += (o, s) =>
+                    {
+                        if (ShowNotification)
+                            ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke();
+                    };
+                }
+                finally
+                {
+                    ConnectionInProgress = false;
+                }
             }
         }
     }

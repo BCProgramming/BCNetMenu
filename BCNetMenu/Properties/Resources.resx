@@ -118,35 +118,17 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Dual_Network" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network (7).ICO;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Dual_Network_Disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network (7)_disabled.ICO;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="network_computer" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\network_computer.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="network_computer_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\network_computer_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Network_Connections" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network Connections.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Network_Connections_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network Connections_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Network_Connection_Manager" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Network Connection Manager.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Network__3_" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Network (3).ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Network__4_" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network (4).ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Network__4__disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network (4)_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="server_network" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\server_network.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -172,16 +154,25 @@
   <data name="Triple_Network" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Network (5).ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Vista_Network" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network (9).ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Vista_Network_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Network (9)_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="XP_Network" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\XP Network.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="XP_Network_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\XP Network_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dual_Network" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Dual_Network.ICO;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Dual_Network_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Dual_network_disabled.ICO;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Earth_Icon_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Earth Icon_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Network_Ring_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Network_Ring_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Vista_Network_disabled" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Vista_Network_disabled.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

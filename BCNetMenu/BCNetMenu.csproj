@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BCNetMenu</RootNamespace>
     <AssemblyName>BCNetMenu</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -58,6 +59,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DropSplitButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FrmNetMenu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -126,25 +130,22 @@
   <ItemGroup>
     <Content Include="network_computer.ico" />
     <None Include="Resources\XP Network_disabled.ico" />
-    <None Include="Resources\Network %284%29_disabled.ico" />
-    <None Include="Resources\Network %287%29_disabled.ICO" />
-    <None Include="Resources\Network %289%29_disabled.ico" />
-    <None Include="Resources\Network Connections_disabled.ico" />
+    <None Include="Resources\Network_Ring_disabled.ico" />
+    <None Include="Resources\Dual_network_disabled.ICO" />
+    <None Include="Resources\Vista_Network_disabled.ico" />
+    <None Include="Resources\Earth Icon_disabled.ico" />
     <None Include="Resources\network_computer_disabled.ico" />
     <None Include="Resources\Network.ico" />
-    <None Include="Resources\Network Shedual.ico" />
     <None Include="Resources\Network Monitor.ico" />
-    <None Include="Resources\Network Connections.ico" />
+    <None Include="Resources\Earth Icon.ico" />
     <None Include="Resources\Network Connection Manager.ico" />
-    <None Include="Resources\Network %289%29.ico" />
-    <None Include="Resources\Network %288%29.ico" />
-    <None Include="Resources\Network %287%29.ICO" />
+    <None Include="Resources\Vista_Network.ico" />
+    <None Include="Resources\Dual_Network.ICO" />
     <None Include="Resources\Network %286%29.ico" />
     <None Include="Resources\Network %285%29.ico" />
-    <None Include="Resources\Network %284%29.ico" />
+    <None Include="Resources\Network_Ring.ico" />
     <None Include="Resources\Network %283%29.ico" />
     <None Include="Resources\XP Network.ico" />
-    <None Include="Resources\Network - Windows.ICO" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

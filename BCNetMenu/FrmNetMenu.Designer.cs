@@ -47,6 +47,7 @@
             this.tBarIntensity = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
             this.chkConnectionNotifications = new System.Windows.Forms.CheckBox();
+            this.NotificationIconSplit = new BCNetMenu.DropSplitButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBarIntensity)).BeginInit();
@@ -55,7 +56,7 @@
             // button1
             // 
             this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.Location = new System.Drawing.Point(303, 530);
+            this.button1.Location = new System.Drawing.Point(303, 590);
             this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(84, 30);
@@ -67,7 +68,7 @@
             // button2
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(212, 530);
+            this.button2.Location = new System.Drawing.Point(212, 590);
             this.button2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(84, 30);
@@ -99,7 +100,7 @@
             this.groupBox1.Size = new System.Drawing.Size(367, 103);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Connections";
+            this.groupBox1.Text = "Show Connections";
             // 
             // radBoth
             // 
@@ -168,7 +169,7 @@
             // 
             this.groupBox2.Controls.Add(this.button3);
             this.groupBox2.Controls.Add(this.lblCurrentFont);
-            this.groupBox2.Location = new System.Drawing.Point(16, 420);
+            this.groupBox2.Location = new System.Drawing.Point(16, 478);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(376, 101);
             this.groupBox2.TabIndex = 8;
@@ -250,11 +251,24 @@
             this.chkConnectionNotifications.Text = "Show Connection Notifications";
             this.chkConnectionNotifications.UseVisualStyleBackColor = true;
             // 
+            // NotificationIconSplit
+            // 
+            this.NotificationIconSplit.AutoSize = true;
+            this.NotificationIconSplit.DropDownImage = null;
+            this.NotificationIconSplit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.NotificationIconSplit.Location = new System.Drawing.Point(41, 429);
+            this.NotificationIconSplit.Name = "NotificationIconSplit";
+            this.NotificationIconSplit.Size = new System.Drawing.Size(123, 27);
+            this.NotificationIconSplit.TabIndex = 16;
+            this.NotificationIconSplit.Text = "Notification Icon";
+            this.NotificationIconSplit.UseVisualStyleBackColor = true;
+            // 
             // frmNetMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(398, 570);
+            this.ClientSize = new System.Drawing.Size(398, 630);
+            this.Controls.Add(this.NotificationIconSplit);
             this.Controls.Add(this.chkConnectionNotifications);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.tBarIntensity);
@@ -306,6 +320,7 @@
         private System.Windows.Forms.TrackBar tBarIntensity;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chkConnectionNotifications;
+        private DropSplitButton NotificationIconSplit;
     }
 }
 

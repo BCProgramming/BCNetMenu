@@ -20,7 +20,7 @@ namespace BCNetMenu
         }
 
         private ConnectionDisplayType _ConnectionTypes = ConnectionDisplayType.Connection_Wireless | ConnectionDisplayType.Connection_VPN;
-
+        private bool _DisconnectionNotifications = true;
         private bool _ConnectionNotifications = true;
         private bool _DWMBlur;
         private String _MenuRenderer = "Office 2007";
@@ -41,6 +41,7 @@ namespace BCNetMenu
 
         public bool ConnectionNotifications { get { return _ConnectionNotifications; }  set { _ConnectionNotifications = value; }}
 
+        public bool DisconnectNotifications {  get { return _DisconnectionNotifications; } set { _DisconnectionNotifications = value; } }
         public NetMenuSettings() : this(GetDefaultSettingsFilePath())
         {
         }
