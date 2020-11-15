@@ -295,30 +295,39 @@ namespace BCNetMenu
                 
            
 
-                if (this.LoadedSettings.DisconnectNotifications)
+                if (this.LoadedSettings.DisconnectNotifications || this.LoadedSettings.LogConnectionChanges)
                 {
                     //first find any new standard connections.
                     var ConnectedStandard = (from c in NewStandard where !PreviousStandard.Any((a)=>a.Name==c.Name) select c).ToList();
                     var DisconnectedStandard = (from c in PreviousStandard where  !NewStandard.Any((a) => a.Name == c.Name) select c).ToList();
 
                     //now evaluate wireless connections.
-
-                    var ConnectedWireless = (from w in newWireless where !PreviousWireless.Any((a) => a.Name == w.Name) select w).ToList();
-                    var DisconnectedWireless = (from w in PreviousWireless where !newWireless.Any((a) => a.Name == w.Name) select w).ToList();
+                    String sConnectionText = "";
+                    String sDisconnectionText = "";
+                    //we will only monitor for the connection types we are set to also display.
+                    var ConnectedWireless = !LoadedSettings.ShowConnectionTypes.HasFlag(NetMenuSettings.ConnectionDisplayType.Connection_Wireless)?
+                         new List<NetworkConnectionInfo>():
+                         (from w in newWireless where !PreviousWireless.Any((a) => a.Name == w.Name) select w).ToList();
+                    var DisconnectedWireless = !LoadedSettings.ShowConnectionTypes.HasFlag(NetMenuSettings.ConnectionDisplayType.Connection_VPN)?
+                        new List<NetworkConnectionInfo>():
+                        (from w in PreviousWireless where !newWireless.Any((a) => a.Name == w.Name) select w).ToList();
                     String buildNotificationText = "";
-                    if (DisconnectedStandard.Any() || DisconnectedWireless.Any())
+                    if ((DisconnectedStandard.Any() || DisconnectedWireless.Any()) )
                     {
                         //wireless or standard connection was disconnected. build a string for a description and show a notification regarding what disconnected.
-                        buildNotificationText  = "Disconnected: " + String.Join(",", from s in DisconnectedStandard.Concat(DisconnectedWireless) select s.Name);
+                        sDisconnectionText =  "Disconnected: " + String.Join(",", from s in DisconnectedStandard.Concat(DisconnectedWireless) select s.Name);
 
                     }
-                    if(ConnectedWireless.Any() || ConnectedStandard.Any())
+                    if((ConnectedWireless.Any() || ConnectedStandard.Any()) )
                     {
-                        buildNotificationText += Environment.NewLine + "Connected: " + String.Join(",", from s in ConnectedStandard.Concat(ConnectedWireless) select s.Name);
+
+                        sConnectionText = Environment.NewLine + "Connected: " + String.Join(",", from s in ConnectedStandard.Concat(ConnectedWireless) select s.Name);
                     }
                     if(!String.IsNullOrEmpty(buildNotificationText))
                     {
                         String TipTitle = "Connection Changes";
+                        bool connectedChange = ConnectedWireless.Any() || ConnectedStandard.Any();
+                        bool disconnectedChange = DisconnectedWireless.Any() || DisconnectedStandard.Any();
                         bool connectedOnly = !DisconnectedWireless.Any() && !DisconnectedStandard.Any();
                         bool disconnectedOnly = !ConnectedWireless.Any() && !ConnectedStandard.Any();
                         if (connectedOnly)
@@ -326,14 +335,24 @@ namespace BCNetMenu
                         else if (disconnectedOnly)
                             TipTitle = "Disconnections";
 
-                        nIcon.ShowBalloonTip(5000, TipTitle, buildNotificationText, ToolTipIcon.Info);
+                        
+                        if((connectedChange && LoadedSettings.ConnectionNotifications) || (disconnectedChange && LoadedSettings.DisconnectNotifications))
+                            nIcon.ShowBalloonTip(5000, TipTitle, buildNotificationText, ToolTipIcon.Info);
 
+                        
                             //ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke();
                     }
+                    if (LoadedSettings.LogConnectionChanges)
+                        LogConnectionChange(ConnectedStandard, ConnectedWireless, DisconnectedStandard, DisconnectedWireless);
+
                 }
             }
             PreviousStandard = NewStandard;
             PreviousWireless = newWireless;
+           
+        }
+        private void LogConnectionChange(IEnumerable<NetworkConnectionInfo> pStandardConnected, IEnumerable<NetworkConnectionInfo> pWirelessConnected, IEnumerable<NetworkConnectionInfo> pStandardDisconnected, IEnumerable<NetworkConnectionInfo> pWirelessDisconnected)
+        {
 
         }
         private List<NetworkConnectionInfo> PreviousStandard = null, PreviousWireless = null;

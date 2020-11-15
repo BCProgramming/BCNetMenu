@@ -48,6 +48,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.chkConnectionNotifications = new System.Windows.Forms.CheckBox();
             this.NotificationIconSplit = new BCNetMenu.DropSplitButton();
+            this.chkLogConnection = new System.Windows.Forms.CheckBox();
+            this.btnOpenLog = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBarIntensity)).BeginInit();
@@ -243,7 +245,7 @@
             // chkConnectionNotifications
             // 
             this.chkConnectionNotifications.AutoSize = true;
-            this.chkConnectionNotifications.Location = new System.Drawing.Point(12, 84);
+            this.chkConnectionNotifications.Location = new System.Drawing.Point(11, 48);
             this.chkConnectionNotifications.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.chkConnectionNotifications.Name = "chkConnectionNotifications";
             this.chkConnectionNotifications.Size = new System.Drawing.Size(220, 21);
@@ -256,18 +258,39 @@
             this.NotificationIconSplit.AutoSize = true;
             this.NotificationIconSplit.DropDownImage = null;
             this.NotificationIconSplit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.NotificationIconSplit.Location = new System.Drawing.Point(41, 429);
+            this.NotificationIconSplit.Location = new System.Drawing.Point(21, 429);
             this.NotificationIconSplit.Name = "NotificationIconSplit";
             this.NotificationIconSplit.Size = new System.Drawing.Size(123, 27);
             this.NotificationIconSplit.TabIndex = 16;
             this.NotificationIconSplit.Text = "Notification Icon";
             this.NotificationIconSplit.UseVisualStyleBackColor = true;
             // 
+            // chkLogConnection
+            // 
+            this.chkLogConnection.AutoSize = true;
+            this.chkLogConnection.Location = new System.Drawing.Point(11, 74);
+            this.chkLogConnection.Name = "chkLogConnection";
+            this.chkLogConnection.Size = new System.Drawing.Size(189, 21);
+            this.chkLogConnection.TabIndex = 17;
+            this.chkLogConnection.Text = "Log Connection Changes";
+            this.chkLogConnection.UseVisualStyleBackColor = true;
+            // 
+            // btnOpenLog
+            // 
+            this.btnOpenLog.Location = new System.Drawing.Point(275, 74);
+            this.btnOpenLog.Name = "btnOpenLog";
+            this.btnOpenLog.Size = new System.Drawing.Size(103, 32);
+            this.btnOpenLog.TabIndex = 18;
+            this.btnOpenLog.Text = "Open Log";
+            this.btnOpenLog.UseVisualStyleBackColor = true;
+            // 
             // frmNetMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(398, 630);
+            this.Controls.Add(this.btnOpenLog);
+            this.Controls.Add(this.chkLogConnection);
             this.Controls.Add(this.NotificationIconSplit);
             this.Controls.Add(this.chkConnectionNotifications);
             this.Controls.Add(this.label2);
@@ -321,6 +344,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chkConnectionNotifications;
         private DropSplitButton NotificationIconSplit;
+        private System.Windows.Forms.CheckBox chkLogConnection;
+        private System.Windows.Forms.Button btnOpenLog;
     }
 }
 
