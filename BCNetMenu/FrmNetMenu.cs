@@ -334,7 +334,7 @@ namespace BCNetMenu
                             TipTitle = "New Connections";
                         else if (disconnectedOnly)
                             TipTitle = "Disconnections";
-
+                        
                         
                         if((connectedChange && LoadedSettings.ConnectionNotifications) || (disconnectedChange && LoadedSettings.DisconnectNotifications))
                             nIcon.ShowBalloonTip(5000, TipTitle, buildNotificationText, ToolTipIcon.Info);
@@ -351,9 +351,39 @@ namespace BCNetMenu
             PreviousWireless = newWireless;
            
         }
+        FileStream LogFile = null;
+        StreamWriter LogFileStream { get
+            {
+                if (LogFile == null || !LogFile.CanWrite)
+                {
+                    LogFile = new FileStream(LoadedSettings.LogFileLocation, FileMode.Append, FileAccess.Write);
+                }
+                    return new StreamWriter(LogFile);
+                
+            } }
         private void LogConnectionChange(IEnumerable<NetworkConnectionInfo> pStandardConnected, IEnumerable<NetworkConnectionInfo> pWirelessConnected, IEnumerable<NetworkConnectionInfo> pStandardDisconnected, IEnumerable<NetworkConnectionInfo> pWirelessDisconnected)
         {
-
+            StringBuilder BuildAddition = new StringBuilder();
+            foreach(var iterate in pStandardConnected)
+            {
+                BuildAddition.AppendLine(BuildTimeStamp() + " Connected:" + iterate.Name);
+            }
+            foreach(var iterate in pStandardDisconnected)
+            {
+                BuildAddition.AppendLine(BuildTimeStamp() + " Disconnected:" + iterate.Name);
+            }
+            foreach (var iterate in pWirelessConnected)
+            {
+                BuildAddition.AppendLine(BuildTimeStamp() + " Connected:" + iterate.Name);
+            }
+            foreach (var iterate in pWirelessDisconnected)
+            {
+                BuildAddition.AppendLine(BuildTimeStamp() + " Disconnected:" + iterate.Name);
+            }
+        }
+        private String BuildTimeStamp()
+        {
+            return DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss-ffffff") + ">>";
         }
         private List<NetworkConnectionInfo> PreviousStandard = null, PreviousWireless = null;
         private void GetConnectionsInfo(out List<NetworkConnectionInfo> standardconnections,out List<NetworkConnectionInfo> wirelessconnections)
@@ -667,7 +697,7 @@ namespace BCNetMenu
             LoadedSettings.OverrideAccentColor = SelectedCustomAccentColor;
             LoadedSettings.UseSystemAccentColor = chkSystemAccent.Checked;
             LoadedSettings.ConnectionNotifications = chkConnectionNotifications.Checked;
-
+            LoadedSettings.LogConnectionChanges = chkLogConnection.Checked;
             LoadedSettings.Save();
             Hide();
         }
@@ -737,6 +767,11 @@ namespace BCNetMenu
             {
                 IntensityRecurse = false;
             }
+        }
+
+        private void btnOpenLog_Click(object sender, EventArgs e)
+        {
+
         }
 
         public class NetworkConnectionInfo

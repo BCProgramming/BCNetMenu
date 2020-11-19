@@ -47,9 +47,9 @@
             this.tBarIntensity = new System.Windows.Forms.TrackBar();
             this.label2 = new System.Windows.Forms.Label();
             this.chkConnectionNotifications = new System.Windows.Forms.CheckBox();
-            this.NotificationIconSplit = new BCNetMenu.DropSplitButton();
             this.chkLogConnection = new System.Windows.Forms.CheckBox();
             this.btnOpenLog = new System.Windows.Forms.Button();
+            this.NotificationIconSplit = new BCNetMenu.DropSplitButton();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tBarIntensity)).BeginInit();
@@ -253,18 +253,6 @@
             this.chkConnectionNotifications.Text = "Show Connection Notifications";
             this.chkConnectionNotifications.UseVisualStyleBackColor = true;
             // 
-            // NotificationIconSplit
-            // 
-            this.NotificationIconSplit.AutoSize = true;
-            this.NotificationIconSplit.DropDownImage = null;
-            this.NotificationIconSplit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.NotificationIconSplit.Location = new System.Drawing.Point(21, 429);
-            this.NotificationIconSplit.Name = "NotificationIconSplit";
-            this.NotificationIconSplit.Size = new System.Drawing.Size(123, 27);
-            this.NotificationIconSplit.TabIndex = 16;
-            this.NotificationIconSplit.Text = "Notification Icon";
-            this.NotificationIconSplit.UseVisualStyleBackColor = true;
-            // 
             // chkLogConnection
             // 
             this.chkLogConnection.AutoSize = true;
@@ -283,6 +271,19 @@
             this.btnOpenLog.TabIndex = 18;
             this.btnOpenLog.Text = "Open Log";
             this.btnOpenLog.UseVisualStyleBackColor = true;
+            this.btnOpenLog.Click += new System.EventHandler(this.btnOpenLog_Click);
+            // 
+            // NotificationIconSplit
+            // 
+            this.NotificationIconSplit.AutoSize = true;
+            this.NotificationIconSplit.DropDownImage = null;
+            this.NotificationIconSplit.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.NotificationIconSplit.Location = new System.Drawing.Point(21, 429);
+            this.NotificationIconSplit.Name = "NotificationIconSplit";
+            this.NotificationIconSplit.Size = new System.Drawing.Size(123, 27);
+            this.NotificationIconSplit.TabIndex = 16;
+            this.NotificationIconSplit.Text = "Notification Icon";
+            this.NotificationIconSplit.UseVisualStyleBackColor = true;
             // 
             // frmNetMenu
             // 

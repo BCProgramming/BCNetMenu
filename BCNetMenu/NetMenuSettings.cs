@@ -47,7 +47,13 @@ namespace BCNetMenu
         public NetMenuSettings() : this(GetDefaultSettingsFilePath())
         {
         }
-
+        public String LogFileLocation
+        {
+            get
+            {
+                return Path.Combine(DefaultDataFolder, "ConnectionLog.log");
+            }
+        }
         public NetMenuSettings(String sXMLFile)
         {
             if (!File.Exists(sXMLFile))
@@ -130,10 +136,16 @@ namespace BCNetMenu
             get { return _DWMBlur; }
             set { _DWMBlur = value; }
         }
-
+        public static String DefaultDataFolder
+        {
+            get
+            {
+                return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BASeCamp", "BCNetMenu");
+            }
+        }
         public static String GetDefaultSettingsFilePath()
         {
-            return Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "BASeCamp", "BCNetMenu", "BCNetMenu.config");
+            return Path.Combine(DefaultDataFolder, "BCNetMenu.config");
         }
 
         public void Save(String sXMLFile)
