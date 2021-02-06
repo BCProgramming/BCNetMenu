@@ -227,7 +227,7 @@ namespace BCNetMenu
             lblCurrentFont.Text = GetFontDescription(LoadedSettings.WifiFont);
             lblCurrentFont.Font = LoadedSettings.WifiFont;
             nIcon.Visible = true;
-            Visible = false; //Form should be invisible. This form will likely become the settings menu as well, but we'll add an option for that in the context menu when we need it.
+            Visible = false; //Form should be invisible. 
             Hide();
             nIcon.MouseUp += NIcon_MouseUp;
             nIcon.MouseMove += NIcon_MouseMove;
@@ -575,6 +575,8 @@ namespace BCNetMenu
 
         private void SettingsItem_Click(object sender, EventArgs e)
         {
+            this.ShowInTaskbar = true;
+            this.WindowState = FormWindowState.Normal;
             chkAutoStart.Checked = IsStartupRegistered();
             radVPN.Checked = radWireless.Checked = radBoth.Checked = false;
             int Converted = (int) LoadedSettings.ShowConnectionTypes;
