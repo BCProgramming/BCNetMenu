@@ -19,7 +19,7 @@ namespace BCNetMenu.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -63,9 +63,79 @@ namespace BCNetMenu.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon Dual_Network {
+            get {
+                object obj = ResourceManager.GetObject("Dual_Network", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Dual_Network_disabled {
+            get {
+                object obj = ResourceManager.GetObject("Dual_Network_disabled", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Earth_Icon_disabled {
+            get {
+                object obj = ResourceManager.GetObject("Earth_Icon_disabled", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Network__3_ {
+            get {
+                object obj = ResourceManager.GetObject("Network__3_", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon network_computer {
             get {
                 object obj = ResourceManager.GetObject("network_computer", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon network_computer_disabled {
+            get {
+                object obj = ResourceManager.GetObject("network_computer_disabled", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Network_Connection_Manager {
+            get {
+                object obj = ResourceManager.GetObject("Network_Connection_Manager", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Network_Ring_disabled {
+            get {
+                object obj = ResourceManager.GetObject("Network_Ring_disabled", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }
@@ -136,6 +206,46 @@ namespace BCNetMenu.Properties {
         internal static System.Drawing.Icon signal_5 {
             get {
                 object obj = ResourceManager.GetObject("signal_5", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Triple_Network {
+            get {
+                object obj = ResourceManager.GetObject("Triple_Network", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Vista_Network_disabled {
+            get {
+                object obj = ResourceManager.GetObject("Vista_Network_disabled", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon XP_Network {
+            get {
+                object obj = ResourceManager.GetObject("XP_Network", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon XP_Network_disabled {
+            get {
+                object obj = ResourceManager.GetObject("XP_Network_disabled", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

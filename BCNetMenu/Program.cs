@@ -9,8 +9,13 @@ namespace BCNetMenu
 {
     static class Program
     {
+        public enum SignalDisplayType
+        {
+            Signal_Bars
+        }
+
         /// <summary>
-        /// The main entry point for the application.
+        ///     The main entry point for the application.
         /// </summary>
         [STAThread]
         static void Main()
@@ -21,11 +26,5 @@ namespace BCNetMenu
             NetMenu.Visible = false;
             Application.Run(NetMenu);
         }
-
-        public enum SignalDisplayType
-        {
-            Signal_Bars
-        }
-        
     }
 }
