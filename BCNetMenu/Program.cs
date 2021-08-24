@@ -17,7 +17,9 @@ namespace BCNetMenu
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmNetMenu());
+            var NetMenu = new frmNetMenu();
+            NetMenu.Visible = false;
+            Application.Run(NetMenu);
         }
 
         public enum SignalDisplayType
