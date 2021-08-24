@@ -68,6 +68,7 @@
     <Compile Include="FrmNetMenu.Designer.cs">
       <DependentUpon>FrmNetMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="MenuRendererInfoAttribute.cs" />
     <Compile Include="NetMenuSettings.cs" />
     <Compile Include="Office2007ColorTable.cs" />
     <Compile Include="Office2007Helpers.cs" />

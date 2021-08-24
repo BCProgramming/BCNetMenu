@@ -239,6 +239,8 @@ namespace BCNetMenu
             UpdateAccentState();
             UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, UpdateTimeDelay);
             PopulateIconSplit(NotificationIconSplit,IconListing,LoadedSettings);
+
+
         }
 
         private void IconMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
@@ -775,6 +777,42 @@ namespace BCNetMenu
         {
 
         }
+
+        private void frmNetMenu_MouseClick(object sender, MouseEventArgs e)
+        {
+            return;
+            if(e.Button == MouseButtons.Right)
+            {
+                //show silly recycle bin menu.
+                Bitmap RecycleIcon = Icon.ExtractAssociatedIcon("T:\\Recycle Bin (30) (full).ico").ToBitmap();
+                ContextMenuStrip cms = new ContextMenuStrip();
+                cms.Renderer = GetConfiguredToolStripRenderer();
+                ToolStripMenuItem RecycleItem = new ToolStripMenuItem(RecycleIcon);
+                RecycleItem.Text = "Empty Recycle bin";
+                RecycleItem.DropDown = new ContextMenuStrip();
+                RecycleItem.DropDown.Items.Add(new ToolStripMenuItem("Ghost"));
+                System.EventHandler openingevent = null;
+                openingevent = (o, ev) =>
+                {
+                    var ts = (ToolStripDropDown)((ToolStripMenuItem)o).DropDown;
+                    ts.Items.Clear();
+                    ToolStripMenuItem NewRecycleItem = new ToolStripMenuItem(RecycleIcon);
+                    NewRecycleItem.DropDown = new ContextMenuStrip() { Renderer = GetConfiguredToolStripRenderer()};
+                    
+                    NewRecycleItem.Text = "Empty Recycle Bin";
+                    NewRecycleItem.DropDown.Items.Add(new ToolStripMenuItem("Ghost"));
+                    NewRecycleItem.DropDownOpening += openingevent;
+                    ts.Items.Add(NewRecycleItem);
+
+                };
+                RecycleItem.DropDownOpening += openingevent;
+                cms.Items.Add(RecycleItem);
+                cms.Show(Cursor.Position);
+
+            }
+        }
+
+    
 
         public class NetworkConnectionInfo
         {

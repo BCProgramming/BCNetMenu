@@ -22,7 +22,9 @@ namespace BCNetMenu
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmNetMenu());
+            var MainMenu = new frmNetMenu();
+            MainMenu.Visible = false;
+            Application.Run(MainMenu);
         }
     }
 }
