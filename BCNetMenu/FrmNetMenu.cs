@@ -212,12 +212,12 @@ namespace BCNetMenu
             cboMenuAppearance.Items.AddRange(new[] {"System", "Professional", "Office 2007", "Windows 10 Foldout"});
             Icon = Resources.network_computer;
             nIcon = new NotifyIcon();
-            
             nIcon.Text = "BASeCamp Network Menu";
             nIcon.Click += NIcon_Click;
             IconMenu = new ContextMenuStrip();
             IconMenu.Items.Add(new ToolStripMenuItem("GHOST"));
             nIcon.ContextMenuStrip = IconMenu;
+            //nIcon.MouseClick += NIcon_MouseClick;
             IconMenu.Opening += IconMenu_Opening;
             IconMenu.Opened += IconMenu_Opened;
             IconMenu.Closed += IconMenu_Closed;
@@ -242,6 +242,8 @@ namespace BCNetMenu
 
 
         }
+
+        
 
         private void IconMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
@@ -483,12 +485,17 @@ namespace BCNetMenu
             return result;
 
         }
-        private void IconMenu_Opening(object sender, CancelEventArgs e)
+        Thread MenuPopulationThread = null;
+        private void PopulateMenuThread(Object parameter)
         {
-            IconMenu.Renderer = GetConfiguredToolStripRenderer();
-            IconMenu.Items.Clear();
-            IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
-            IconMenu.ImageScalingSize = new Size(64, 64);
+            //object parameter is the ToolStripMenu to populate.
+            var useMenu = parameter as ContextMenuStrip;
+            PopulateMenu(useMenu);
+        }
+        private void PopulateMenu(ContextMenuStrip Target)
+        {
+
+            List<Action> AllThreadActions = new List<Action>();
             List<NetworkConnectionInfo> standardconnections = null;
             try
             {
@@ -500,36 +507,42 @@ namespace BCNetMenu
             }
             if (standardconnections.Count == 0)
             {
-                ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Configured VPN Connections>>");
-                tsm.Enabled = false;
-                IconMenu.Items.Add(tsm);
+                Invoke((MethodInvoker)(() =>
+                {
+                    ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Configured VPN Connections>>");
+                    tsm.Enabled = false;
+                    Target.Items.Add(tsm);
+                }));
             }
             else
             {
                 foreach (var stdcon in standardconnections)
                 {
-                    ToolStripMenuItem tsm = new ToolStripMenuItem(stdcon.Name);
-                    tsm.Checked = stdcon.Connected;
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        ToolStripMenuItem tsm = new ToolStripMenuItem(stdcon.Name);
+                        tsm.Checked = stdcon.Connected;
 
-                    var grabIcon = ((Icon) Resources.ResourceManager.GetObject("server_network"));
-                    var useImage = new Icon(grabIcon, 64, 64).ToBitmap();
-                    if (tsm.Checked) useImage = Selectify(useImage);
-                    tsm.Image = useImage;
-                    if (stdcon.Connected)
-                    {
-                        tsm.Click += vpndisconnect_Click;
-                    }
-                    else
-                    {
-                        tsm.Click += vpnconnect_Click;
-                    }
-                    tsm.Font = LoadedSettings.VPNFont;
-                    //tsm.Font = new Font(tsm.Font.FontFamily,FontSize,tsm.Font.Style);
-                    tsm.Tag = stdcon;
-                    IconMenu.Items.Add(tsm);
+                        var grabIcon = ((Icon)Resources.ResourceManager.GetObject("server_network"));
+                        var useImage = new Icon(grabIcon, 64, 64).ToBitmap();
+                        if (tsm.Checked) useImage = Selectify(useImage);
+                        tsm.Image = useImage;
+                        if (stdcon.Connected)
+                        {
+                            tsm.Click += vpndisconnect_Click;
+                        }
+                        else
+                        {
+                            tsm.Click += vpnconnect_Click;
+                        }
+                        tsm.Font = LoadedSettings.VPNFont;
+                        //tsm.Font = new Font(tsm.Font.FontFamily,FontSize,tsm.Font.Style);
+                        tsm.Tag = stdcon;
+                        Target.Items.Add(tsm);
+                    }));
                 }
             }
-            IconMenu.Items.Add(new ToolStripSeparator());
+            Invoke((MethodInvoker)(()=>Target.Items.Add(new ToolStripSeparator())));
             List<NetworkConnectionInfo> wirelessconnections = null;
             try
             {
@@ -541,37 +554,57 @@ namespace BCNetMenu
             }
             if (wirelessconnections.Count == 0)
             {
-                ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Available Access Points>>");
-                tsm.Enabled = false;
-                IconMenu.Items.Add(tsm);
+                Invoke((MethodInvoker)(() =>
+                {
+                    ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Available Access Points>>");
+                    tsm.Enabled = false;
+                    Target.Items.Add(tsm);
+                }));
             }
             foreach (var wirelesscon in wirelessconnections)
             {
                 //if (wirelesscon.Name.Trim().Length > 0)
                 {
-                    ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name == "" ? "<unknown>" : wirelesscon.Name);
-                    tsm.Checked = wirelesscon.Connected;
-                    //tsm.Font = new Font(tsm.Font.FontFamily, FontSize, tsm.Font.Style);
+                    Invoke((MethodInvoker)(() =>
+                    {
+                        ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name == "" ? "<unknown>" : wirelesscon.Name);
+                        tsm.Checked = wirelesscon.Connected;
+                        //tsm.Font = new Font(tsm.Font.FontFamily, FontSize, tsm.Font.Style);
 
-                    var grabIcon = ((Icon) Resources.ResourceManager.GetObject(GetSignal((int) wirelesscon.APInfo.SignalStrength)));
-                    Image useImage = new Icon(grabIcon, 64, 64).ToBitmap();
-                    if (tsm.Checked) useImage = Selectify(useImage);
-                    tsm.Image = useImage;
-                    tsm.Font = LoadedSettings.WifiFont;
-                    tsm.Tag = wirelesscon;
-                    IconMenu.Items.Add(tsm);
-                    tsm.Click += WirelessClick;
+                        var grabIcon = ((Icon)Resources.ResourceManager.GetObject(GetSignal((int)wirelesscon.APInfo.SignalStrength)));
+                        Image useImage = new Icon(grabIcon, 64, 64).ToBitmap();
+                        if (tsm.Checked) useImage = Selectify(useImage);
+                        tsm.Image = useImage;
+                        tsm.Font = LoadedSettings.WifiFont;
+                        tsm.Tag = wirelesscon;
+                        IconMenu.Items.Add(tsm);
+                        tsm.Click += WirelessClick;
+                    }));
                 }
             }
-            IconMenu.Items.Add(new ToolStripSeparator());
-            ToolStripMenuItem SettingsItem = new ToolStripMenuItem("Settings...");
-            SettingsItem.Click += SettingsItem_Click;
+            Invoke((MethodInvoker)(() =>
+            {
+                Target.Items.Add(new ToolStripSeparator());
+                ToolStripMenuItem SettingsItem = new ToolStripMenuItem("Settings...");
+                SettingsItem.Click += SettingsItem_Click;
 
-            IconMenu.Items.Add(SettingsItem);
-            ToolStripMenuItem ExitItem = new ToolStripMenuItem("Exit");
-            SettingsItem.Font = ExitItem.Font = LoadedSettings.NetMenuItemsFont;
-            ExitItem.Click += ExitItem_Click;
-            IconMenu.Items.Add(ExitItem);
+                Target.Items.Add(SettingsItem);
+                ToolStripMenuItem ExitItem = new ToolStripMenuItem("Exit");
+                SettingsItem.Font = ExitItem.Font = LoadedSettings.NetMenuItemsFont;
+                ExitItem.Click += ExitItem_Click;
+                Target.Items.Add(ExitItem);
+            }));
+        }
+        private void IconMenu_Opening(object sender, CancelEventArgs e)
+        {
+            IconMenu.Renderer = GetConfiguredToolStripRenderer();
+            IconMenu.Items.Clear();
+            IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
+            IconMenu.ImageScalingSize = new Size(64, 64);
+            IconMenu.Items.Clear();
+            MenuPopulationThread = new Thread(PopulateMenuThread);
+            MenuPopulationThread.Start(IconMenu);
+
         }
 
 
@@ -680,6 +713,7 @@ namespace BCNetMenu
 
         private void frmNetMenu_Shown(object sender, EventArgs e)
         {
+
             if (!ShowSettings) Visible = false;
         }
 
@@ -780,36 +814,7 @@ namespace BCNetMenu
 
         private void frmNetMenu_MouseClick(object sender, MouseEventArgs e)
         {
-            return;
-            if(e.Button == MouseButtons.Right)
-            {
-                //show silly recycle bin menu.
-                Bitmap RecycleIcon = Icon.ExtractAssociatedIcon("T:\\Recycle Bin (30) (full).ico").ToBitmap();
-                ContextMenuStrip cms = new ContextMenuStrip();
-                cms.Renderer = GetConfiguredToolStripRenderer();
-                ToolStripMenuItem RecycleItem = new ToolStripMenuItem(RecycleIcon);
-                RecycleItem.Text = "Empty Recycle bin";
-                RecycleItem.DropDown = new ContextMenuStrip();
-                RecycleItem.DropDown.Items.Add(new ToolStripMenuItem("Ghost"));
-                System.EventHandler openingevent = null;
-                openingevent = (o, ev) =>
-                {
-                    var ts = (ToolStripDropDown)((ToolStripMenuItem)o).DropDown;
-                    ts.Items.Clear();
-                    ToolStripMenuItem NewRecycleItem = new ToolStripMenuItem(RecycleIcon);
-                    NewRecycleItem.DropDown = new ContextMenuStrip() { Renderer = GetConfiguredToolStripRenderer()};
-                    
-                    NewRecycleItem.Text = "Empty Recycle Bin";
-                    NewRecycleItem.DropDown.Items.Add(new ToolStripMenuItem("Ghost"));
-                    NewRecycleItem.DropDownOpening += openingevent;
-                    ts.Items.Add(NewRecycleItem);
-
-                };
-                RecycleItem.DropDownOpening += openingevent;
-                cms.Items.Add(RecycleItem);
-                cms.Show(Cursor.Position);
-
-            }
+           
         }
 
     
