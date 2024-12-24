@@ -22,6 +22,7 @@ namespace BCNetMenu
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
             var MainMenu = new frmNetMenu();
             MainMenu.Visible = false;
             Application.Run(MainMenu);
