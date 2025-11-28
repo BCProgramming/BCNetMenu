@@ -534,13 +534,13 @@ namespace BCNetMenu
             {
                 foreach (var stdcon in standardconnections)
                 {
-                    Invoke((MethodInvoker)(() =>
+                    BeginInvoke((MethodInvoker)(() =>
                     {
                         ToolStripMenuItem tsm = new ToolStripMenuItem(stdcon.Name);
                         tsm.Checked = stdcon.Connected;
 
                         var grabIcon = ((Icon)Resources.ResourceManager.GetObject("server_network"));
-                        var useImage = new Icon(grabIcon, 64, 64).ToBitmap();
+                        var useImage = new Icon(grabIcon, 32, 32).ToBitmap();
                         if (tsm.Checked) useImage = Selectify(useImage);
                         tsm.Image = useImage;
                         if (stdcon.Connected)
@@ -558,44 +558,48 @@ namespace BCNetMenu
                     }));
                 }
             }
-            Invoke((MethodInvoker)(()=>Target.Items.Add(new ToolStripSeparator())));
-            List<NetworkConnectionInfo> wirelessconnections = null;
-            try
+
+            if (LoadedSettings.ShowConnectionTypes.HasFlag(NetMenuSettings.ConnectionDisplayType.Connection_Wireless))
             {
-                wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
-            }
-            catch (Exception exx)
-            {
-                wirelessconnections = new List<NetworkConnectionInfo>();
-            }
-            if (wirelessconnections.Count == 0)
-            {
-                Invoke((MethodInvoker)(() =>
+                Invoke((MethodInvoker)(() => Target.Items.Add(new ToolStripSeparator())));
+                List<NetworkConnectionInfo> wirelessconnections = null;
+                try
                 {
-                    ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Available Access Points>>");
-                    tsm.Enabled = false;
-                    Target.Items.Add(tsm);
-                }));
-            }
-            foreach (var wirelesscon in wirelessconnections)
-            {
-                //if (wirelesscon.Name.Trim().Length > 0)
+                    wirelessconnections = NetworkConnectionInfo.GetWirelessConnections().ToList();
+                }
+                catch (Exception exx)
+                {
+                    wirelessconnections = new List<NetworkConnectionInfo>();
+                }
+                if (wirelessconnections.Count == 0)
                 {
                     Invoke((MethodInvoker)(() =>
                     {
-                        ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name == "" ? "<unknown>" : wirelesscon.Name);
-                        tsm.Checked = wirelesscon.Connected;
-                        //tsm.Font = new Font(tsm.Font.FontFamily, FontSize, tsm.Font.Style);
-
-                        var grabIcon = ((Icon)Resources.ResourceManager.GetObject(GetSignal((int)wirelesscon.APInfo.SignalStrength)));
-                        Image useImage = new Icon(grabIcon, 64, 64).ToBitmap();
-                        if (tsm.Checked) useImage = Selectify(useImage);
-                        tsm.Image = useImage;
-                        tsm.Font = LoadedSettings.WifiFont;
-                        tsm.Tag = wirelesscon;
-                        IconMenu.Items.Add(tsm);
-                        tsm.Click += WirelessClick;
+                        ToolStripMenuItem tsm = new ToolStripMenuItem("<<No Available Access Points>>");
+                        tsm.Enabled = false;
+                        Target.Items.Add(tsm);
                     }));
+                }
+                foreach (var wirelesscon in wirelessconnections)
+                {
+                    //if (wirelesscon.Name.Trim().Length > 0)
+                    {
+                        BeginInvoke((MethodInvoker)(() =>
+                        {
+                            ToolStripMenuItem tsm = new ToolStripMenuItem(wirelesscon.Name == "" ? "<unknown>" : wirelesscon.Name);
+                            tsm.Checked = wirelesscon.Connected;
+                            //tsm.Font = new Font(tsm.Font.FontFamily, FontSize, tsm.Font.Style);
+
+                            var grabIcon = ((Icon)Resources.ResourceManager.GetObject(GetSignal((int)wirelesscon.APInfo.SignalStrength)));
+                            Image useImage = new Icon(grabIcon, 32, 32).ToBitmap();
+                            if (tsm.Checked) useImage = Selectify(useImage);
+                            tsm.Image = useImage;
+                            tsm.Font = LoadedSettings.WifiFont;
+                            tsm.Tag = wirelesscon;
+                            IconMenu.Items.Add(tsm);
+                            tsm.Click += WirelessClick;
+                        }));
+                    }
                 }
             }
             Invoke((MethodInvoker)(() =>
@@ -616,7 +620,7 @@ namespace BCNetMenu
             IconMenu.Renderer = GetConfiguredToolStripRenderer();
             IconMenu.Items.Clear();
             IconMenu.Font = new Font(IconMenu.Font.FontFamily, FontSize, IconMenu.Font.Style);
-            IconMenu.ImageScalingSize = new Size(64, 64);
+            IconMenu.ImageScalingSize = new Size(32, 32);
             IconMenu.Items.Clear();
             MenuPopulationThread = new Thread(PopulateMenuThread);
             MenuPopulationThread.Start(IconMenu);
