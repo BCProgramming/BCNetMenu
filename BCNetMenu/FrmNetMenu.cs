@@ -42,7 +42,7 @@ namespace BCNetMenu
 
         private String[] SignalIcons = {"signal_0", "signal_1", "signal_2", "signal_3", "signal_4", "signal_5"};
 
-        Timer UpdateTipTimer;
+        //Timer UpdateTipTimer;
 
         public frmNetMenu()
         {
@@ -206,7 +206,7 @@ namespace BCNetMenu
             
 
         }
-        private static readonly TimeSpan UpdateTimeDelay = new TimeSpan(0, 0, 0, 3);
+        //private static readonly TimeSpan UpdateTimeDelay = new TimeSpan(0, 0, 0, 30);
         private void Form1_Load(object sender, EventArgs e)
         {
             cboMenuAppearance.Items.AddRange(new[] {"System", "Professional", "Office 2007", "Windows 10 Foldout"});
@@ -237,13 +237,23 @@ namespace BCNetMenu
             chkConnectionNotifications.Checked = LoadedSettings.ConnectionNotifications;
             //these controls are disabled if not using the win10 renderer style.
             UpdateAccentState();
-            UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, UpdateTimeDelay);
+            //UpdateTipTimer = new Timer(TipTimer, null, TimeSpan.Zero, UpdateTimeDelay);
             PopulateIconSplit(NotificationIconSplit,IconListing,LoadedSettings);
-
+            RefreshNetworkData();
+            NetworkChange.NetworkAvailabilityChanged += NetworkChange_NetworkAvailabilityChanged;
+            NetworkChange.NetworkAddressChanged += NetworkChange_NetworkAddressChanged;
 
         }
 
-        
+        private void NetworkChange_NetworkAddressChanged(object sender, EventArgs e)
+        {
+            this.RefreshNetworkData();
+        }
+
+        private void NetworkChange_NetworkAvailabilityChanged(object sender, NetworkAvailabilityEventArgs e)
+        {
+            //
+        }
 
         private void IconMenu_Closed(object sender, ToolStripDropDownClosedEventArgs e)
         {
@@ -282,15 +292,9 @@ namespace BCNetMenu
         private void NIcon_MouseMove(object sender, MouseEventArgs e)
         {
         }
-        private void TipTimer(object State)
+        private void RefreshNetworkData()
         {
-            String UpdatedTip = GetUpdatedTip();
-            nIcon.Text =  UpdatedTip;
-            nIcon.Icon = GetIcon();
-
-
-            //Update state regarding connections too.
-            List<NetworkConnectionInfo> NewStandard = null, newWireless = null;
+                        List<NetworkConnectionInfo> NewStandard = null, newWireless = null;
             GetConnectionsInfo(out NewStandard, out newWireless);
             NewStandard.RemoveAll((g) => !g.Connected);
             newWireless.RemoveAll((g) => !g.Connected);
@@ -320,13 +324,17 @@ namespace BCNetMenu
                     {
                         //wireless or standard connection was disconnected. build a string for a description and show a notification regarding what disconnected.
                         sDisconnectionText =  "Disconnected: " + String.Join(",", from s in DisconnectedStandard.Concat(DisconnectedWireless) select s.Name);
-
+                        
                     }
                     if((ConnectedWireless.Any() || ConnectedStandard.Any()) )
                     {
 
                         sConnectionText = Environment.NewLine + "Connected: " + String.Join(",", from s in ConnectedStandard.Concat(ConnectedWireless) select s.Name);
+                        
                     }
+                    buildNotificationText = String.Join("\n", String.Join(",", new[] { sDisconnectionText, sConnectionText }).Split(new[] { "," }, StringSplitOptions.RemoveEmptyEntries));
+
+
                     if(!String.IsNullOrEmpty(buildNotificationText))
                     {
                         String TipTitle = "Connection Changes";
@@ -353,7 +361,15 @@ namespace BCNetMenu
             }
             PreviousStandard = NewStandard;
             PreviousWireless = newWireless;
-           
+        }
+        
+      
+        private void UpdateToolTip()
+        {
+            String UpdatedTip = GetUpdatedTip();
+            nIcon.Text =  UpdatedTip;
+            nIcon.Icon = GetIcon();
+
         }
         FileStream LogFile = null;
         StreamWriter LogFileStream { get
@@ -495,7 +511,7 @@ namespace BCNetMenu
         private void PopulateMenu(ContextMenuStrip Target)
         {
 
-            List<Action> AllThreadActions = new List<Action>();
+            
             List<NetworkConnectionInfo> standardconnections = null;
             try
             {
@@ -947,8 +963,11 @@ namespace BCNetMenu
                     p.EnableRaisingEvents = ShowNotification;
                     p.Exited += (o, s) =>
                     {
-                        if (ShowNotification)
-                            ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke();
+                        if (p.ExitCode == 0)
+                        {
+                            if (ShowNotification)
+                                ni.ShowBalloonTip(5000, "Disconnected", "Disconnected from VPN " + VPNName + "", ToolTipIcon.Info); CompleteAction?.Invoke();
+                        }
                     };
                 }
                 finally
